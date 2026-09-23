@@ -4,7 +4,7 @@ A portfolio Flutter app for searching and browsing movies, built with clean arch
 
 ## Status
 
-Early scaffold stage. Search/list functionality and the architecture layers are in progress.
+Early stage. Project scaffold, dependencies, and environment configuration are in place. Search, listing, and detail screens are in progress.
 
 ## Planned features
 
@@ -16,23 +16,34 @@ Early scaffold stage. Search/list functionality and the architecture layers are 
 
 - [Flutter](https://flutter.dev)
 - [Riverpod](https://riverpod.dev) for state management
-- Movie data via a public movies API (provider TBD, TMDb under consideration)
+- [Dio](https://pub.dev/packages/dio) for HTTP requests
+- [Hive](https://pub.dev/packages/hive) for local storage
+- [go_router](https://pub.dev/packages/go_router) for navigation
+- [TMDb API](https://www.themoviedb.org/documentation/api) for movie data
 
 ## Architecture
 
 The app follows clean architecture, with `lib/` split into three layers:
 
-- `domain/` — entities and repository interfaces, framework-independent
-- `data/` — models and repository implementations, talks to the API
-- `presentation/` — pages, widgets, and Riverpod providers
+- `domain/`: entities and repository interfaces, framework-independent
+- `data/`: models and repository implementations, talks to the API
+- `presentation/`: pages, widgets, and Riverpod providers
 
 Dependencies point inward: `presentation` and `data` depend on `domain`, never the other way around.
 
 ## Getting started
 
-```bash
-flutter pub get
-flutter run
-```
+1. Copy `.env.example` to `.env` and fill in your TMDb API key.
+2. Install dependencies:
+
+   ```bash
+   flutter pub get
+   ```
+
+3. Run the app:
+
+   ```bash
+   flutter run
+   ```
 
 Requires the Flutter SDK (^3.12.2). See [flutter.dev](https://docs.flutter.dev/get-started/install) for setup instructions.
