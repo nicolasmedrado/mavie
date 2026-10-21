@@ -26,7 +26,10 @@ class MovieDetailsPage extends ConsumerWidget {
                   child: Image.network('$tmdbImageBaseUrl${movie.posterPath}'),
                 ),
               const SizedBox(height: 16),
-              Text(movie.title, style: Theme.of(context).textTheme.headlineSmall),
+              Text(
+                movie.title,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
               const SizedBox(height: 8),
               Row(
                 children: [

@@ -3,8 +3,8 @@ title: CI pipeline
 sprint: foundations
 feature: —
 milestone: mvp
-status: backlog
-started_at:
+status: in_progress
+started_at: 2026-10-21
 finished_at:
 ---
 
@@ -41,15 +41,17 @@ That is also a useful property to preserve: **no test should ever need a real AP
 
 ## Checklist
 
-- [ ] `ci.yml` running on push to `main` and on every pull request
-- [ ] `subosito/flutter-action` pinned to the project's SDK version
-- [ ] `cp .env.example .env` before the test step
-- [ ] Cache `~/.pub-cache`
-- [ ] Upload the coverage artifact (no threshold gate yet — current coverage is partial and a failing gate on day one just gets disabled)
-- [ ] Branch protection on `main`: require the check, no direct pushes
-- [ ] Add a CI badge to the README
+- [x] `ci.yml` running on push to `main` and on every pull request
+- [x] `subosito/flutter-action` pinned to the project's SDK version (3.47.5, stable)
+- [x] `cp .env.example .env` before the test step
+- [x] Cache `~/.pub-cache`
+- [x] Upload the coverage artifact (no threshold gate yet — current coverage is partial and a failing gate on day one just gets disabled)
+- [ ] Branch protection on `main`: require the check, no direct pushes — **not done by Claude**, a GitHub repo-settings change affecting shared state. Needs to be set manually (or confirmed) once the workflow is on `main`
+- [x] Add a CI badge to the README
 
 ## Test scenario
+
+All three steps ran locally with the exact commands the workflow uses (`dart format --output=none --set-exit-if-changed .`, `flutter analyze --fatal-infos`, `flutter test --coverage`) — all green. The scenarios below need the workflow actually running on GitHub, left for manual verification once pushed:
 
 1. Open a pull request with a deliberately badly formatted file
    - **Expected:** the format step fails and the PR is blocked
@@ -68,3 +70,4 @@ That is also a useful property to preserve: **no test should ever need a real AP
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | `.github/workflows/ci.yml` added, CI badge added to README. Branch protection and the live on-GitHub gate verification left for the user |
