@@ -1,5 +1,7 @@
 # Mavie
 
+[![CI](https://github.com/nicolasmedrado/mavie/actions/workflows/ci.yml/badge.svg)](https://github.com/nicolasmedrado/mavie/actions/workflows/ci.yml)
+
 A portfolio Flutter app for searching and browsing movies, built with clean architecture and Riverpod for state management.
 
 ## Status

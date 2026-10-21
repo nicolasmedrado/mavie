@@ -31,7 +31,7 @@ Only the **FND** issues have their own files so far. The rest are specified here
 |---|---|---|
 | [[sprints/foundations/FND-01-dependency-cleanup\|FND-01]] | Remove `hive`/`hive_flutter`; add `supabase_flutter`, `flutter_localizations`, `intl`, `cached_network_image` | done |
 | [[sprints/foundations/FND-02-feature-first-restructure\|FND-02]] | Move the nine existing files into `core/` + `features/movies/`; rename `movieClientProvider` | in_progress — automated checks green, pending your manual `flutter run` check |
-| [[sprints/foundations/FND-03-ci-pipeline\|FND-03]] | GitHub Actions: format, analyze, test with coverage; branch protection | backlog |
+| [[sprints/foundations/FND-03-ci-pipeline\|FND-03]] | GitHub Actions: format, analyze, test with coverage; branch protection | in_progress — workflow written, branch protection and live verification pending |
 | [[sprints/foundations/FND-04-entity-split\|FND-04]] | `MovieSummary` / `MovieDetails`; add the discarded fields; add `toJson` | backlog |
 | [[sprints/foundations/FND-05-result-and-failures\|FND-05]] | Sealed `AppFailure` + `Result`, and mappers for the three exception families | backlog |
 | [[sprints/foundations/FND-06-design-system\|FND-06]] | `AppTheme` light and dark, colour, typography and spacing tokens | backlog |
