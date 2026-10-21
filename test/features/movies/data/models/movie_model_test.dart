@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mavie/data/models/movie_model.dart';
+import 'package:mavie/features/movies/data/models/movie_model.dart';
 
 void main() {
   test('fromJson parses the fields TMDB returns', () {

@@ -21,9 +21,9 @@ Takes a `movieId` and fetches the film itself — it does not receive the `Movie
 
 | Layer | File |
 |---|---|
-| Page | [movie_details_page.dart](../../../lib/presentation/pages/movie_details_page.dart) — `ConsumerWidget`, `movieAsync.when(data/error/loading)` |
-| Provider | `movieDetailsProvider` — `FutureProvider.family<Movie, int>` in [movie_providers.dart](../../../lib/presentation/providers/movie_providers.dart) |
-| Data source | [movie_remote_data_source.dart](../../../lib/data/datasources/movie_remote_data_source.dart) — `GET /movie/{id}` |
+| Page | [movie_details_page.dart](../../../lib/features/movies/presentation/pages/movie_details_page.dart) — `ConsumerWidget`, `movieAsync.when(data/error/loading)` |
+| Provider | `movieDetailsProvider` — `FutureProvider.family<Movie, int>` in [movie_providers.dart](../../../lib/features/movies/presentation/providers/movie_providers.dart) |
+| Data source | [movie_remote_data_source.dart](../../../lib/features/movies/data/datasources/movie_remote_data_source.dart) — `GET /movie/{id}` |
 
 Shares its entity, repository and DI graph with [[features/movie-search/_overview]].
 
@@ -54,3 +54,4 @@ This screen is where most of the MVP converges.
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Documented retroactively from the shipped code, with known gaps recorded |
+| 2026-10-21 | FND-02: moved to `features/movies/` |

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:mavie/main.dart';
+import 'package:mavie/app/app.dart';
 
 void main() {
   testWidgets('app launches straight into the movie search screen', (
