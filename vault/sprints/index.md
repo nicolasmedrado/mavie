@@ -29,7 +29,7 @@ Only the **FND** issues have their own files so far. The rest are specified here
 
 | Issue | Scope | Status |
 |---|---|---|
-| [[sprints/foundations/FND-01-dependency-cleanup\|FND-01]] | Remove `hive`/`hive_flutter`; add `supabase_flutter`, `flutter_localizations`, `intl`, `cached_network_image` | backlog |
+| [[sprints/foundations/FND-01-dependency-cleanup\|FND-01]] | Remove `hive`/`hive_flutter`; add `supabase_flutter`, `flutter_localizations`, `intl`, `cached_network_image` | done |
 | [[sprints/foundations/FND-02-feature-first-restructure\|FND-02]] | Move the nine existing files into `core/` + `features/movies/`; rename `movieClientProvider` | backlog |
 | [[sprints/foundations/FND-03-ci-pipeline\|FND-03]] | GitHub Actions: format, analyze, test with coverage; branch protection | backlog |
 | [[sprints/foundations/FND-04-entity-split\|FND-04]] | `MovieSummary` / `MovieDetails`; add the discarded fields; add `toJson` | backlog |
