@@ -3,9 +3,9 @@ title: Dependency cleanup
 sprint: foundations
 feature: —
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-21
-finished_at:
+finished_at: 2026-10-21
 ---
 
 # FND-01 · Dependency cleanup
