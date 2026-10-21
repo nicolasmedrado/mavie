@@ -3,8 +3,8 @@ title: Dependency cleanup
 sprint: foundations
 feature: —
 milestone: mvp
-status: backlog
-started_at:
+status: in_progress
+started_at: 2026-10-21
 finished_at:
 ---
 
@@ -43,13 +43,13 @@ Also set `flutter: generate: true` for the l10n codegen FND-08 needs.
 
 ## Checklist
 
-- [ ] Remove `hive` and `hive_flutter`
-- [ ] Add `supabase_flutter`, `flutter_localizations`, `intl`, `cached_network_image`
-- [ ] Add `generate: true` under `flutter:`
-- [ ] Fix `description:`
-- [ ] `flutter pub get`, commit the updated `pubspec.lock`
-- [ ] `flutter analyze` clean, `flutter test` green (4 files)
-- [ ] Tick the two Hive rows in [[_meta/discrepancies]] as resolved
+- [x] Remove `hive` and `hive_flutter`
+- [x] Add `supabase_flutter`, `flutter_localizations`, `intl`, `cached_network_image`
+- [x] Add `generate: true` under `flutter:`
+- [x] Fix `description:`
+- [x] `flutter pub get`, commit the updated `pubspec.lock`
+- [x] `flutter analyze` clean, `flutter test` green (4 files)
+- [x] Tick the two Hive rows in [[_meta/discrepancies]] as resolved
 
 ## Test scenario
 
@@ -65,10 +65,20 @@ Also set `flutter: generate: true` for the l10n codegen FND-08 needs.
 
 ## Notes
 
-<!-- resolved versions go here -->
+Resolved on 2026-10-21:
+
+| Package | Version |
+|---|---|
+| `supabase_flutter` | `^2.18.3` |
+| `intl` | `^0.20.3` |
+| `cached_network_image` | `^4.0.5` |
+| `flutter_localizations` | SDK (bundled with Flutter, no version pin) |
+
+`generate: true` is set with no `l10n.yaml` / ARB files yet — `flutter pub get` and `flutter analyze` both pass clean against it; the codegen only runs once FND-08 adds the inputs.
 
 ## Maintenance
 
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | Hive removed, Supabase/l10n/image-cache deps added, `flutter analyze` and `flutter test` (8 tests, 4 files) verified clean |

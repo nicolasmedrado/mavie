@@ -23,8 +23,11 @@ Divergences between documentation and reality (code, libraries, external APIs), 
 | 2026-10-21 | Both pages | Network images degrade gracefully | `Image.network` with no `errorBuilder` / `loadingBuilder`, no caching | `cached_network_image` + `MoviePoster` in FND-01/FND-07 |
 | 2026-10-21 | [movie_remote_data_source.dart](../../lib/data/datasources/movie_remote_data_source.dart) | Paginated search | `page` is never sent and `total_pages` is ignored — only the first 20 results are ever reachable | Pagination in MOV-04 |
 
+| 2026-10-21 | `pubspec.yaml` | `hive` / `hive_flutter` removed per FND-01 | Resolved — both removed, `flutter pub deps` confirms no trace, `flutter analyze`/`flutter test` clean | Row above (`hive`/`hive_flutter` never imported) closed |
+
 ## Maintenance
 
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Log created and seeded with the findings from the pre-vault codebase audit |
+| 2026-10-21 | FND-01 closed the Hive row — appended a resolution row rather than editing the original |

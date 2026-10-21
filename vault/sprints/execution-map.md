@@ -14,7 +14,7 @@ last_review: 2026-10-21
 - When an issue finishes, tick it here, update its row in [[sprints/index]], and recalculate the phase and overall counters by hand.
 - `Overall = done / 66`.
 
-**Overall: 6% (4/66)** · **Phase 0: 67% (4/6)**
+**Overall: 8% (5/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 9% (1/11)**
 
 ---
 
@@ -29,11 +29,11 @@ Independent of everything. Done first so decisions are written as they are made,
 - [ ] (`DOC-01`) README rewrite — *better once the app looks like the product*
 - [ ] (`DOC-06`) TMDb attribution screen — *needs a Settings/About screen to live in*
 
-## Phase 1 — Foundations · 0% (0/11)
+## Phase 1 — Foundations · 9% (1/11)
 
 Everything here is cheap now and expensive later. **Do not start product features before this phase closes.**
 
-- [ ] **E02** (`FND-01`) Dependency cleanup
+- [x] **E02** (`FND-01`) Dependency cleanup
 - [ ] **E03** (`FND-02`) **Feature-first restructure** — nine files today, ~80 at MVP. The cost grows superlinearly; this is the single most time-sensitive issue in the project
 - [ ] **E04** (`FND-03`) CI pipeline — guards every refactor that follows, so it comes before the risky ones
 - [ ] **E05** (`FND-04`) Entity split and serialization ∥ (`FND-05`) `Result` and `AppFailure` — *independent of each other, both block UI work*
@@ -118,3 +118,4 @@ When something blocks, pull from here instead of idling:
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Map created; Phase 0 documentation issues ticked as the vault was written |
+| 2026-10-21 | E02 (FND-01) ticked: Hive removed, Supabase/l10n/image-cache deps added |
