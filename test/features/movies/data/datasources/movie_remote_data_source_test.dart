@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mavie/data/datasources/movie_remote_data_source.dart';
+import 'package:mavie/features/movies/data/datasources/movie_remote_data_source.dart';
 
 class _FakeAdapter implements HttpClientAdapter {
   _FakeAdapter(this.responseBody);

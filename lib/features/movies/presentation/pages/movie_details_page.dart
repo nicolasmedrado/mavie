@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mavie/data/datasources/dio_client.dart';
-import 'package:mavie/presentation/providers/movie_providers.dart';
+import 'package:mavie/core/network/tmdb_dio.dart';
+import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
 
 class MovieDetailsPage extends ConsumerWidget {
   final int movieId;

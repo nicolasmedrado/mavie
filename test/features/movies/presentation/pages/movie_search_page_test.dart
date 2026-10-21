@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mavie/data/providers/providers.dart';
-import 'package:mavie/domain/entities/movie.dart';
-import 'package:mavie/domain/repositories/movie_repository.dart';
-import 'package:mavie/presentation/pages/movie_details_page.dart';
-import 'package:mavie/presentation/pages/movie_search_page.dart';
+import 'package:mavie/features/movies/domain/entities/movie.dart';
+import 'package:mavie/features/movies/domain/repositories/movie_repository.dart';
+import 'package:mavie/features/movies/presentation/pages/movie_details_page.dart';
+import 'package:mavie/features/movies/presentation/pages/movie_search_page.dart';
+import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
 
 class _FakeMovieRepository implements MovieRepository {
   _FakeMovieRepository(this.movies);

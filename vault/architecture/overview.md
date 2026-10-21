@@ -49,7 +49,7 @@ lib/
 
 This does not weaken clean architecture, it makes it visible: the dependency rule applies per feature, and "can this folder be deleted cleanly?" becomes a real question with a real answer.
 
-> The code is **not** in this shape yet — it is still layer-first (`lib/domain`, `lib/data`, `lib/presentation`). The move is FND-02, scheduled early precisely because the cost grows with the file count. See [[architecture/decisions/0001-feature-first-modules]].
+> FND-02 moved the code into this shape. `app/`, `core/network/` and `features/movies/` exist; the rest of `core/` and the other `features/*` folders are created as their own issues land, per [[architecture/decisions/0001-feature-first-modules]].
 
 ## State management
 
@@ -70,9 +70,7 @@ supabaseClientProvider     SupabaseClient (overridden in tests)
 
 Repository providers are always typed as the **domain interface**, never the implementation. That is what lets a test swap in a hand-written fake with `overrideWithValue` and never touch the network.
 
-Providers live beside the feature that owns them. The current global `lib/data/providers/providers.dart` is dissolved by FND-02.
-
-> `movieClientProvider` is renamed `tmdbDioProvider` in FND-02 — "movie client" sitting next to a Supabase client is ambiguous.
+Providers live beside the feature that owns them — all of the above now lives in `features/movies/presentation/providers/movie_providers.dart`; the old global `lib/data/providers/providers.dart` was dissolved into it by FND-02, which also renamed `movieClientProvider` to `tmdbDioProvider` ("movie client" sitting next to a Supabase client was ambiguous).
 
 ## Error handling
 
@@ -134,3 +132,4 @@ The recommendation ranking (HOME-02) is written as a **pure function** over seed
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Written from the shipped code plus the MVP architecture decisions |
+| 2026-10-21 | FND-02 landed: feature-first layout, `tmdbDioProvider` rename, `app/` bootstrap/app split |

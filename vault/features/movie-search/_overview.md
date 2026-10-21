@@ -22,20 +22,19 @@ Documented retroactively from the shipped code on 2026-10-21. This describes **w
 
 | Layer | File |
 |---|---|
-| Page | [movie_search_page.dart](../../../lib/presentation/pages/movie_search_page.dart) — `ConsumerStatefulWidget`, a local `Timer` for the debounce, `Navigator.push(MaterialPageRoute(...))` on tap |
-| Providers | [movie_providers.dart](../../../lib/presentation/providers/movie_providers.dart) — `movieSearchQueryProvider` (`NotifierProvider<MovieSearchQueryNotifier, String>`), `movieSearchResultsProvider` (`FutureProvider<List<Movie>>` watching the query) |
-| DI | [providers.dart](../../../lib/data/providers/providers.dart) — `movieClientProvider` → `movieRemoteDataSourceProvider` → `movieRepositoryProvider`, typed as the domain interface |
-| Repository | [movie_repository.dart](../../../lib/domain/repositories/movie_repository.dart) (interface) · [movie_repository_impl.dart](../../../lib/data/repositories/movie_repository_impl.dart) (maps `MovieModel.toEntity()`) |
-| Data source | [movie_remote_data_source.dart](../../../lib/data/datasources/movie_remote_data_source.dart) — `GET /search/movie?query=` |
-| Entity / model | [movie.dart](../../../lib/domain/entities/movie.dart) · [movie_model.dart](../../../lib/data/models/movie_model.dart) |
+| Page | [movie_search_page.dart](../../../lib/features/movies/presentation/pages/movie_search_page.dart) — `ConsumerStatefulWidget`, a local `Timer` for the debounce, `Navigator.push(MaterialPageRoute(...))` on tap |
+| Providers | [movie_providers.dart](../../../lib/features/movies/presentation/providers/movie_providers.dart) — `tmdbDioProvider` → `movieRemoteDataSourceProvider` → `movieRepositoryProvider` (typed as the domain interface), `movieSearchQueryProvider` (`NotifierProvider<MovieSearchQueryNotifier, String>`), `movieSearchResultsProvider` (`FutureProvider<List<Movie>>` watching the query) |
+| Repository | [movie_repository.dart](../../../lib/features/movies/domain/repositories/movie_repository.dart) (interface) · [movie_repository_impl.dart](../../../lib/features/movies/data/repositories/movie_repository_impl.dart) (maps `MovieModel.toEntity()`) |
+| Data source | [movie_remote_data_source.dart](../../../lib/features/movies/data/datasources/movie_remote_data_source.dart) — `GET /search/movie?query=` |
+| Entity / model | [movie.dart](../../../lib/features/movies/domain/entities/movie.dart) · [movie_model.dart](../../../lib/features/movies/data/models/movie_model.dart) |
 
 Endpoint details: [[architecture/tmdb-integration]].
 
 ## Tests
 
-[movie_search_page_test.dart](../../../test/presentation/pages/movie_search_page_test.dart) — `_FakeMovieRepository` with a `searchCallCount` spy, injected via `ProviderScope(overrides: [movieRepositoryProvider.overrideWithValue(...)])`. Covers: debounce (0 calls after 100 ms, 1 call after 400 ms), results rendering, and that tapping navigates to `MovieDetailsPage`.
+[movie_search_page_test.dart](../../../test/features/movies/presentation/pages/movie_search_page_test.dart) — `_FakeMovieRepository` with a `searchCallCount` spy, injected via `ProviderScope(overrides: [movieRepositoryProvider.overrideWithValue(...)])`. Covers: debounce (0 calls after 100 ms, 1 call after 400 ms), results rendering, and that tapping navigates to `MovieDetailsPage`.
 
-[movie_remote_data_source_test.dart](../../../test/data/datasources/movie_remote_data_source_test.dart) — `_FakeAdapter implements HttpClientAdapter` on a bare `Dio`, capturing `lastRequest` to assert path and query parameters.
+[movie_remote_data_source_test.dart](../../../test/features/movies/data/datasources/movie_remote_data_source_test.dart) — `_FakeAdapter implements HttpClientAdapter` on a bare `Dio`, capturing `lastRequest` to assert path and query parameters.
 
 ## Known gaps
 
@@ -52,7 +51,6 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 
 | Issue | Change |
 |---|---|
-| FND-02 | Moves to `features/movies/` |
 | FND-07 | Result tile uses the shared `MoviePoster` |
 | FND-10 | `Navigator.push` becomes `context.push('/movie/:id')`; the page becomes a shell tab |
 | MOV-04 | Pagination, skeletons, a real no-results state, recent searches |
@@ -62,3 +60,4 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Documented retroactively from the shipped code, with known gaps recorded |
+| 2026-10-21 | FND-02: moved to `features/movies/`; DI table folded into the providers row since `providers.dart` was dissolved and `movieClientProvider` renamed `tmdbDioProvider` |

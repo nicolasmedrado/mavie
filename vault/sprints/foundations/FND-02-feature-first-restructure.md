@@ -3,8 +3,8 @@ title: Feature-first restructure
 sprint: foundations
 feature: —
 milestone: mvp
-status: backlog
-started_at:
+status: in_progress
+started_at: 2026-10-21
 finished_at:
 ---
 
@@ -49,21 +49,24 @@ Pure move-and-rename. **No behaviour changes, no new abstractions.** Resist the 
 
 ## Checklist
 
-- [ ] Move every file per the table
-- [ ] Split `main.dart` into `bootstrap()` (dotenv load, later Supabase init) and `app.dart` (`MaterialApp`)
-- [ ] Rename `movieClientProvider` → `tmdbDioProvider`
-- [ ] Update every import — they are package-absolute (`package:mavie/...`), so this is mechanical
-- [ ] Mirror the structure in `test/`
-- [ ] Update the file tables in [[features/movie-search/_overview]] and [[features/movie-details/_overview]]
+- [x] Move every file per the table
+- [x] Split `main.dart` into `bootstrap()` (dotenv load, later Supabase init) and `app.dart` (`MaterialApp`)
+- [x] Rename `movieClientProvider` → `tmdbDioProvider`
+- [x] Update every import — they are package-absolute (`package:mavie/...`), so this is mechanical
+- [x] Mirror the structure in `test/`
+- [x] Update the file tables in [[features/movie-search/_overview]] and [[features/movie-details/_overview]]
 
 ## Test scenario
 
 1. `flutter analyze`
    - **Expected:** zero issues. A missed import is a compile error, not a silent failure
+   - **Result:** clean
 2. `flutter test`
    - **Expected:** all 4 files green, unchanged assertions
+   - **Result:** 8 tests, 4 files, all green
 3. `flutter run`, search for a film, open it
    - **Expected:** identical behaviour
+   - Manual check — left to the user to run; not performed by Claude
 
 ## Dependencies
 
@@ -75,3 +78,4 @@ Pure move-and-rename. **No behaviour changes, no new abstractions.** Resist the 
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | Files moved per the table, `main.dart` split into `app/bootstrap.dart` + `app/app.dart`, `movieClientProvider` renamed `tmdbDioProvider`, `providers.dart` dissolved into `movie_providers.dart`; `flutter analyze` clean, 8 tests green |
