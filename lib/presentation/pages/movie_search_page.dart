@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mavie/data/datasources/dio_client.dart';
 import 'package:mavie/presentation/pages/movie_details_page.dart';
 import 'package:mavie/presentation/providers/movie_providers.dart';
 
@@ -54,6 +55,22 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
             itemBuilder: (context, index) {
               final movie = movies[index];
               return ListTile(
+                leading: SizedBox(
+                  width: 48,
+                  height: 72,
+                  child: movie.posterPath != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: Image.network(
+                            '$tmdbImageBaseUrl${movie.posterPath}',
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : const ColoredBox(
+                          color: Colors.black12,
+                          child: Icon(Icons.movie_outlined),
+                        ),
+                ),
                 title: Text(movie.title),
                 subtitle: Text(
                   movie.overview,

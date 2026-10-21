@@ -31,6 +31,7 @@ void main() {
       id: 603,
       title: 'The Matrix',
       overview: 'A hacker discovers reality is a simulation.',
+      voteAverage: 8.7,
     ),
     Movie(
       id: 604,
@@ -89,5 +90,6 @@ void main() {
       find.text('A hacker discovers reality is a simulation.'),
       findsOneWidget,
     );
+    expect(find.text('8.7'), findsOneWidget);
   });
 }
