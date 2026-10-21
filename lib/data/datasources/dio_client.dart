@@ -1,6 +1,8 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
 
+const tmdbImageBaseUrl = 'https://image.tmdb.org/t/p/w500';
+
 Dio createDioClient() {
   final tmdbApiKey = dotenv.env['TMDB_API_KEY'];
 
