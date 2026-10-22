@@ -3,8 +3,8 @@ title: l10n setup and string extraction
 sprint: foundations
 feature: localization
 milestone: mvp
-status: backlog
-started_at:
+status: in_progress
+started_at: 2026-10-21
 finished_at:
 ---
 
@@ -43,27 +43,32 @@ localeProvider: Provider<Locale>
 The Settings selector that writes `profiles.locale` is AUTH-07. Until accounts exist, this issue ships with device-locale resolution and the provider seam already in place, so AUTH-07 only has to supply the value.
 
 > ⚠️ Verify: TMDb accepts a `language` parameter the client never sends, so synopses always arrive in TMDb's default. Whether film metadata should follow the user's locale is open — it would need a per-locale `movies_cache`, which the current one-row-per-film schema cannot hold. **Decide here and record it**, in [[features/localization/_overview]] or as an ADR.
+>
+> **Decided:** not localized. See [[architecture/decisions/0015-tmdb-metadata-not-localized]] and [[product/post-mvp]].
 
 ## Checklist
 
-- [ ] `l10n.yaml`, `generate: true` (done in FND-01)
-- [ ] `app_en.arb` and `app_pt.arb` with descriptions on every key
-- [ ] `localizationsDelegates` and `supportedLocales` in `app.dart`
-- [ ] `localeProvider` seam, resolving device → fallback for now
-- [ ] Every literal extracted
-- [ ] `AppFailure` variants mapped to keys
-- [ ] System list names keyed off the enum
-- [ ] Decide and record the TMDb `language` question
-- [ ] Three test assertions migrated (FND-09)
+- [x] `l10n.yaml`, `generate: true` (done in FND-01)
+- [x] `app_en.arb` and `app_pt.arb` with descriptions on every key
+- [x] `localizationsDelegates` and `supportedLocales` in `app.dart`
+- [x] `localeProvider` seam, resolving device → fallback for now
+- [x] Every literal extracted
+- [x] `AppFailure` variants mapped to keys
+- [x] System list names keyed off the enum
+- [x] Decide and record the TMDb `language` question
+- [x] Three test assertions migrated (FND-09)
 
 ## Test scenario
 
 1. Run with the device in Portuguese, then in English
    - **Expected:** full UI in each, no leftover literals
+   - **Manual check — left to the user to run; not performed by Claude.** Roteiro: trocar o idioma do dispositivo entre Português e Inglês (Configurações do Android → Idiomas), abrir o app em cada um, confirmar que busca, detalhes e a tela de erro (força um erro desligando a internet) aparecem totalmente no idioma certo, sem nenhum texto solto em português quando o idioma é inglês ou vice-versa
 2. `grep -rnE "Text\('[A-Za-zÀ-ú]" lib/`
    - **Expected:** no hits
+   - **Result:** clean, no hits
 3. Trigger a network error in each locale
    - **Expected:** a translated message, not `Erro: DioException...`
+   - **Result:** `movie_search_page_test.dart`'s error test asserts via `l10nOf(tester).errorNetwork` (locale-agnostic by construction); the English/Portuguese switch itself is covered by the "renders in English and in Portuguese" test. The live on-device trigger (airplane mode) is part of item 1's manual check
 
 ## Dependencies
 
@@ -76,3 +81,4 @@ The Settings selector that writes `profiles.locale` is AUTH-07. Until accounts e
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | ARB files, `localeProvider`, every string extracted (including `AppErrorView`/`RatingDisplay`, added since this issue was written). TMDb-language question decided (ADR-0015). `flutter analyze --fatal-infos` clean, 43 tests green. Pending your manual device-language check |

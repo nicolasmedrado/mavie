@@ -10,11 +10,11 @@ void main() {
 
   setUpAll(() {
     detailsFixture = jsonDecode(
-      File('test/support/fixtures/tmdb_movie_details.json').readAsStringSync(),
+      File('test/support/fixtures/movie_details.json').readAsStringSync(),
     );
     minimalFixture = jsonDecode(
       File(
-        'test/support/fixtures/tmdb_movie_details_minimal.json',
+        'test/support/fixtures/movie_details_minimal.json',
       ).readAsStringSync(),
     );
   });

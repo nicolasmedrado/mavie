@@ -32,13 +32,13 @@ Shares its repository and DI graph with [[features/movie-search/_overview]]; `Mo
 
 ## Tests
 
-[movie_details_page_test.dart](../../../test/features/movies/presentation/pages/movie_details_page_test.dart) — covers the metadata line rendering (year, runtime, genres), that it is omitted entirely when TMDb has none of them with no stray `"null"` text, and that `AppErrorView`'s retry button re-fetches (Riverpod's automatic retry disabled via `ProviderScope(retry: (_, __) => null, ...)` so the test observes the explicit retry in isolation — see [[architecture/overview]]).
+[movie_details_page_test.dart](../../../test/features/movies/presentation/pages/movie_details_page_test.dart) — pumped via `pumpApp` with `FakeMovieRepository` (`test/support/`). Covers the metadata line rendering (year, runtime, genres), that it is omitted entirely when TMDb has none of them with no stray `"null"` text, and that `AppErrorView`'s retry button re-fetches — `pumpApp` disables Riverpod's automatic retry by default so the test observes the explicit retry in isolation ([[architecture/overview]]).
 
 [movie_details_model_test.dart](../../../test/features/movies/data/models/movie_details_model_test.dart) — `fromJson` against a real TMDb fixture and a minimal one with no runtime/genres, plus the `toJson` cache-shape mapping.
 
 ## Known gaps
 
-- Portuguese strings (`'Detalhes do filme'`, and `AppErrorView`'s messages). FND-08.
+- Film titles and synopses are not localized — accepted debt, [[architecture/decisions/0015-tmdb-metadata-not-localized]].
 
 ## Planned changes
 
@@ -63,3 +63,4 @@ This screen is where most of the MVP converges.
 | 2026-10-21 | FND-04: entity split into `MovieSummary`/`MovieDetails`; details page now renders year, runtime and genres; `toJson` added |
 | 2026-10-21 | FND-06: migrated off hardcoded `Colors.amber`/`SizedBox`/`BorderRadius.circular` onto `core/theme/` tokens |
 | 2026-10-21 | FND-07: poster via `MoviePoster`, rating via `RatingDisplay`, errors via `AppErrorView` with a working retry, loading via `AppLoadingIndicator` |
+| 2026-10-21 | FND-08 + FND-09: app bar title, runtime unit and `AppErrorView`/`RatingDisplay` strings moved to ARB; test migrated to the shared `pumpApp`/`FakeMovieRepository` harness |

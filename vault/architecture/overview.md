@@ -79,9 +79,9 @@ Two paths, deliberately different — [[architecture/decisions/0009-result-for-c
 - **Reads.** Data sources throw; repositories catch and rethrow a sealed `AppFailure`; providers surface it as `AsyncValue.error`; one `AppErrorView` switches on the failure type and renders a localized message with a retry. `AsyncValue` already *is* a result type for reads — wrapping another one inside it would mean unwrapping twice at every call site.
 - **Writes.** Repositories return `Result<T>` (`Ok` | `Err`). Sign-in, rating, creating a list all need inline feedback — a field error under an input, a snackbar with rollback of an optimistic update — which an exception travelling through `AsyncValue` fits badly. An exhaustive `switch` on a sealed `Result` is checked by the compiler.
 
-`AppFailure` and `Result` landed in FND-05 (`core/error/{app_failure,result,failure_mapper}.dart`). `MovieRepositoryImpl` catches and rethrows mapped failures for both reads today — writes return `Result<T>` from AUTH-02 onward, once the first write repository exists. Both screens now render `AppErrorView` (FND-07, `core/widgets/app_error_view.dart`), which switches on the failure and wires a real retry action via `ref.invalidate`. Messages are hardcoded Portuguese for now — they become a real `AppFailure.l10nKey` lookup once FND-08 adds l10n.
+`AppFailure` and `Result` landed in FND-05 (`core/error/{app_failure,result,failure_mapper}.dart`). `MovieRepositoryImpl` catches and rethrows mapped failures for both reads today — writes return `Result<T>` from AUTH-02 onward, once the first write repository exists. Both screens render `AppErrorView` (FND-07, `core/widgets/app_error_view.dart`), which switches on the failure and wires a real retry action via `ref.invalidate`. Since FND-08, each case in that switch reads a real `AppLocalizations` getter (`l10n.errorNetwork`, etc.) instead of a hardcoded string — `AppFailure.l10nKey` is a secondary, stable identifier, not what actually drives the switch (ARB-generated getters are named methods, not a dynamic `l10n[key]` lookup).
 
-> **Riverpod retries before you see an error.** `ProviderContainer.defaultRetry` retries a failed provider up to 10 times with exponential backoff (capped at 6.4s, ~38s total) before `AsyncValue` ever reaches `error` — `.when()` treats a retrying failure as `AsyncLoading` the whole time. Found while testing FND-07's retry button. Disabled app-wide in `main.dart` (`ProviderScope(retry: (_, __) => null, ...)`), since `AppErrorView`'s explicit retry is the intended recovery path, not a silent ~38s background one. Widget tests that exercise an error path must pass the same `retry: (_, __) => null` override to their own `ProviderScope`, since each test builds its own container.
+> **Riverpod retries before you see an error.** `ProviderContainer.defaultRetry` retries a failed provider up to 10 times with exponential backoff (capped at 6.4s, ~38s total) before `AsyncValue` ever reaches `error` — `.when()` treats a retrying failure as `AsyncLoading` the whole time. Found while testing FND-07's retry button. Disabled app-wide in `main.dart` (`ProviderScope(retry: (_, __) => null, ...)`), since `AppErrorView`'s explicit retry is the intended recovery path, not a silent ~38s background one. `test/support/pump_app.dart`'s `pumpApp` disables it by default too, so a new widget test gets this for free.
 
 ## Navigation
 
@@ -109,18 +109,22 @@ While the session is still being restored from secure storage the router pins to
 
 ## Localization
 
-`flutter_localizations` + ARB, Portuguese and English. The locale is a **per-user preference** stored in `profiles.locale`, not the device locale — the two users run the app in different languages on different phones, against the same data. [[architecture/decisions/0011-l10n-per-user-locale]]
+`flutter_localizations` + ARB (`lib/l10n/arb/{app_en,app_pt}.arb`), landed in FND-08. Codegen output lives in `lib/l10n/generated/` — gitignored, rebuilt by `flutter pub get` (`generate: true`, set in FND-01). The locale is meant to be a **per-user preference** stored in `profiles.locale`, not the device locale — the two users run the app in different languages on different phones, against the same data. [[architecture/decisions/0011-l10n-per-user-locale]]
 
-System list names (*Want to watch*, *Watched*) are client-side ARB strings keyed off the `movie_status` enum, never stored in the database. Custom list names live in `lists.name` and are not localizable, which is correct — the user typed them.
+`core/l10n/locale_provider.dart`'s `localeProvider` resolves it today: device locale if it's `pt` or `en`, else `pt`. `currentUser?.locale` takes priority once AUTH-07 exists — the seam ships now so that issue only has to supply the value.
+
+System list names (*Want to watch*, *Watched*) are client-side ARB strings (`libraryStatusWantToWatch`/`libraryStatusWatched`) keyed off the `movie_status` enum, never stored in the database — not wired to any screen yet since the enum is LIB-01. Custom list names live in `lists.name` and are not localizable, which is correct — the user typed them. Film titles and synopses are **not** localized — [[architecture/decisions/0015-tmdb-metadata-not-localized]].
 
 ## Testing
 
-Hand-written fakes, no mocking package — [[architecture/decisions/0014-hand-rolled-fakes]]. The patterns already in the repo are the ones to generalize:
+Hand-written fakes, no mocking package — [[architecture/decisions/0014-hand-rolled-fakes]]. `test/support/` (FND-09) is the entry point for new tests:
 
-- A fake repository implementing the domain interface, injected via `ProviderScope(overrides: [repositoryProvider.overrideWithValue(fake)])` — see [movie_search_page_test.dart](../../test/presentation/pages/movie_search_page_test.dart).
-- A fake `HttpClientAdapter` on a bare `Dio` for data-source tests, capturing the request to assert path and query params — see [movie_remote_data_source_test.dart](../../test/data/datasources/movie_remote_data_source_test.dart).
+- [pump_app.dart](../../test/support/pump_app.dart) — `pumpApp(tester, child, {overrides, locale})` wraps the widget under test in a `ProviderScope` + localized `MaterialApp`; `l10nOf(tester)` resolves `AppLocalizations` from that tree so assertions read `find.text(l10n.searchHint)`, passing in either locale. Riverpod's automatic retry is disabled by default (see below) — pass a real `retry` to opt back in.
+- [fakes/fake_movie_repository.dart](../../test/support/fakes/fake_movie_repository.dart) — one configurable fake `MovieRepository` (search/details results or failures, call-count spies) replaces the ad hoc fakes that used to live in each test file.
+- [fakes/fake_http_adapter.dart](../../test/support/fakes/fake_http_adapter.dart) — a fake `HttpClientAdapter` on a bare `Dio`, either returning a canned JSON response or throwing a given `DioException`, capturing the request for data-source tests.
+- [fixtures/](../../test/support/fixtures/) — real captured TMDb JSON (`search_movie.json`, `movie_details.json`, `movie_details_minimal.json`, `movie_videos.json`, `movie_recommendations.json`), not hand-written. The last two aren't consumed by any code yet — captured ahead of MOV-02 and HOME-02.
 
-FND-09 moves the shared pieces into `test/support/` with a `pumpApp` helper that provides localizations, so widget tests assert on `l10n.searchHint` rather than a Portuguese literal.
+A fake drifting from its interface is a **compile error** — the whole point with five repositories about to exist.
 
 The recommendation ranking (HOME-02) is written as a **pure function** over seeds, candidates and exclusions, so it is testable with no I/O at all.
 
@@ -141,3 +145,4 @@ The recommendation ranking (HOME-02) is written as a **pure function** over seed
 | 2026-10-21 | FND-05 landed: `AppFailure`/`Result`/`failure_mapper`, `MovieRepositoryImpl` rethrows mapped failures |
 | 2026-10-21 | FND-06 landed: `core/theme/` tokens, `AppTheme.light`/`dark`, both pages migrated off hardcoded values |
 | 2026-10-21 | FND-07 landed: `core/widgets/` (`MoviePoster`, `RatingDisplay`, `AppErrorView`, `AppEmptyView`, `AppLoadingIndicator`); found and fixed Riverpod's default ~38s auto-retry masking errors |
+| 2026-10-21 | FND-08 + FND-09 landed: l10n (`localeProvider`, every string extracted) and `test/support/` (`pumpApp`, generalized fakes, real fixtures). Testing section's stale pre-FND-02 paths also corrected in passing |

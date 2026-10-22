@@ -33,9 +33,9 @@ Endpoint details: [[architecture/tmdb-integration]].
 
 ## Tests
 
-[movie_search_page_test.dart](../../../test/features/movies/presentation/pages/movie_search_page_test.dart) — `_FakeMovieRepository` with a `searchCallCount` spy, injected via `ProviderScope(overrides: [movieRepositoryProvider.overrideWithValue(...)])`. Covers: debounce (0 calls after 100 ms, 1 call after 400 ms), results rendering, and that tapping navigates to `MovieDetailsPage`.
+[movie_search_page_test.dart](../../../test/features/movies/presentation/pages/movie_search_page_test.dart) — pumped via `test/support/pump_app.dart`'s `pumpApp`, with `FakeMovieRepository` (`test/support/fakes/`) overriding `movieRepositoryProvider`. Covers: debounce (0 calls after 100 ms, 1 call after 400 ms), results rendering, tapping navigates to `MovieDetailsPage`, the error/retry path, and that the empty-state prompt renders correctly in both English and Portuguese from the same ARB key.
 
-[movie_remote_data_source_test.dart](../../../test/features/movies/data/datasources/movie_remote_data_source_test.dart) — `_FakeAdapter implements HttpClientAdapter` on a bare `Dio`, capturing `lastRequest` to assert path and query parameters.
+[movie_remote_data_source_test.dart](../../../test/features/movies/data/datasources/movie_remote_data_source_test.dart) — `FakeHttpAdapter` (`test/support/fakes/`) on a bare `Dio`, capturing `lastRequest` to assert path and query parameters.
 
 ## Known gaps
 
@@ -43,7 +43,6 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 
 - **Empty query and "no results" are the same state** — a real search that finds nothing shows the *"type something to search"* placeholder. MOV-04.
 - **No pagination.** `page` is never sent, `total_pages` is ignored — only the first 20 results are reachable. MOV-04.
-- UI strings hardcoded in Portuguese; three test assertions depend on them. FND-08 + FND-09.
 
 ## Planned changes
 
@@ -61,3 +60,4 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 | 2026-10-21 | FND-04: search results are now `MovieSummary`, serialized by `MovieSummaryModel` (`fromJson` + `toJson`) |
 | 2026-10-21 | FND-06: result tile's thumbnail size, radius and placeholder colour migrated onto `core/theme/` tokens |
 | 2026-10-21 | FND-07: result tile uses `MoviePoster`; errors render via `AppErrorView` with a working retry; loading uses `AppLoadingIndicator` |
+| 2026-10-21 | FND-08 + FND-09: every string moved to ARB; tests migrated to the shared `pumpApp`/`FakeMovieRepository`/`FakeHttpAdapter` harness |
