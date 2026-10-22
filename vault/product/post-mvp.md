@@ -32,9 +32,11 @@ Ideas deliberately left out of [[product/mvp]], each with the reason and what it
 | Supabase free tier pauses a project after 7 days idle | A recruiter opens the app and nothing works | A scheduled ping, or an explicit cold-start state in the UI |
 | Recommendation fan-out is N requests per refresh | Fine within TMDb limits, wasteful on every scroll | In-memory TTL cache, HOME-04 |
 | No rate limiting on RPCs | Two trusted users | Supabase rate limits if it ever opens up |
+| TMDb film metadata (titles, synopses) is not localized — only the UI chrome is | A user whose UI is in Portuguese still reads an English synopsis | Send `language` per request (no schema change, the details screen already hits TMDb live); per-locale caching only if that alone isn't enough. [[architecture/decisions/0015-tmdb-metadata-not-localized]] |
 
 ## Maintenance
 
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Created alongside the MVP spec, to record what was excluded and why |
+| 2026-10-21 | FND-08: TMDb metadata localization added as accepted debt, decision recorded in ADR-0015 |

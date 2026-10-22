@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mavie/core/error/app_failure.dart';
 import 'package:mavie/core/theme/app_spacing.dart';
+import 'package:mavie/l10n/generated/app_localizations.dart';
 
-/// Switches on the sealed [AppFailure] from FND-05. Messages are
-/// hardcoded Portuguese for now — they become a real lookup on
-/// [AppFailure.l10nKey] once FND-08 adds l10n.
+/// Switches on the sealed [AppFailure] from FND-05, exhaustively mapping
+/// each variant to its ARB key — the switch having no `default` is what
+/// makes a new, unhandled variant a compile error.
 class AppErrorView extends StatelessWidget {
   final AppFailure failure;
   final VoidCallback? onRetry;
@@ -13,6 +14,8 @@ class AppErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -25,13 +28,10 @@ class AppErrorView extends StatelessWidget {
               color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(height: AppSpacing.sm),
-            Text(_message(failure), textAlign: TextAlign.center),
+            Text(_message(l10n, failure), textAlign: TextAlign.center),
             if (onRetry != null) ...[
               const SizedBox(height: AppSpacing.md),
-              FilledButton(
-                onPressed: onRetry,
-                child: const Text('Tentar novamente'),
-              ),
+              FilledButton(onPressed: onRetry, child: Text(l10n.retryButton)),
             ],
           ],
         ),
@@ -39,13 +39,13 @@ class AppErrorView extends StatelessWidget {
     );
   }
 
-  String _message(AppFailure failure) => switch (failure) {
-    NetworkFailure() =>
-      'Sem conexão. Verifique sua internet e tente novamente.',
-    UnauthorizedFailure() => 'Sua sessão expirou. Entre novamente.',
-    ForbiddenFailure() => 'Você não tem permissão para ver isso.',
-    NotFoundFailure() => 'Não encontramos o que você procurava.',
-    ValidationFailure() => 'Algo não é válido. Verifique e tente de novo.',
-    UnknownFailure() => 'Algo deu errado. Tente novamente.',
-  };
+  String _message(AppLocalizations l10n, AppFailure failure) =>
+      switch (failure) {
+        NetworkFailure() => l10n.errorNetwork,
+        UnauthorizedFailure() => l10n.errorUnauthorized,
+        ForbiddenFailure() => l10n.errorForbidden,
+        NotFoundFailure() => l10n.errorNotFound,
+        ValidationFailure() => l10n.errorValidation,
+        UnknownFailure() => l10n.errorUnknown,
+      };
 }

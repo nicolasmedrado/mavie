@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mavie/core/theme/app_colors.dart';
 import 'package:mavie/core/theme/app_spacing.dart';
+import 'package:mavie/l10n/generated/app_localizations.dart';
 
 /// `null` is unrated, `0` is a real score meaning "terrible" — rendering
 /// them the same way is the bug this widget exists to prevent. See
@@ -14,7 +15,7 @@ class RatingDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     if (rating == null) {
       return Text(
-        'Sem nota',
+        AppLocalizations.of(context)!.ratingUnrated,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
         ),

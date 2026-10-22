@@ -1,0 +1,17 @@
+{
+  "@@locale": "pt",
+  "searchHint": "Buscar filmes...",
+  "searchEmptyPrompt": "Digite algo para buscar",
+  "detailsTitle": "Detalhes do filme",
+  "detailsRuntimeMinutes": "{minutes} min",
+  "ratingUnrated": "Sem nota",
+  "errorNetwork": "Sem conexão. Verifique sua internet e tente novamente.",
+  "errorUnauthorized": "Sua sessão expirou. Entre novamente.",
+  "errorForbidden": "Você não tem permissão para ver isso.",
+  "errorNotFound": "Não encontramos o que você procurava.",
+  "errorValidation": "Algo não é válido. Verifique e tente de novo.",
+  "errorUnknown": "Algo deu errado. Tente novamente.",
+  "retryButton": "Tentar novamente",
+  "libraryStatusWantToWatch": "Quero assistir",
+  "libraryStatusWatched": "Assistido"
+}

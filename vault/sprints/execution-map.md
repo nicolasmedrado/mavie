@@ -14,7 +14,7 @@ last_review: 2026-10-21
 - When an issue finishes, tick it here, update its row in [[sprints/index]], and recalculate the phase and overall counters by hand.
 - `Overall = done / 66`.
 
-**Overall: 15% (10/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 55% (6/11)**
+**Overall: 20% (13/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 82% (9/11)**
 
 ---
 
@@ -29,7 +29,7 @@ Independent of everything. Done first so decisions are written as they are made,
 - [ ] (`DOC-01`) README rewrite — *better once the app looks like the product*
 - [ ] (`DOC-06`) TMDb attribution screen — *needs a Settings/About screen to live in*
 
-## Phase 1 — Foundations · 55% (6/11)
+## Phase 1 — Foundations · 82% (9/11)
 
 Everything here is cheap now and expensive later. **Do not start product features before this phase closes.**
 
@@ -38,7 +38,7 @@ Everything here is cheap now and expensive later. **Do not start product feature
 - [x] **E04** (`FND-03`) CI pipeline — guards every refactor that follows, so it comes before the risky ones
 - [x] **E05** (`FND-04`) Entity split and serialization ∥ (`FND-05`) `Result` and `AppFailure` — *independent of each other, both block UI work*
 - [x] **E06** (`FND-06`) Design system → (`FND-07`) Shared widgets — *sequential: the widgets consume the tokens*
-- [ ] **E07** (`FND-08` + `FND-09`) **l10n and test infrastructure, together** — l10n breaks three existing tests and the harness is the fix. Splitting them means migrating the tests twice
+- [x] **E07** (`FND-08` + `FND-09`) **l10n and test infrastructure, together** — l10n breaks three existing tests and the harness is the fix. Splitting them means migrating the tests twice
 - [ ] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06**
 - [ ] (`FND-11`) Lint rules — *any time after E03*
 
@@ -127,3 +127,6 @@ When something blocks, pull from here instead of idling:
 | 2026-10-21 | FND-06 manual check confirmed; E06 stays unticked until FND-07 also lands |
 | 2026-10-21 | FND-07 widgets landed, automated checks green; E06 left unticked pending the manual airplane-mode/cache check |
 | 2026-10-21 | E06 ticked: FND-07's manual check found the airplane-mode scenario isn't achievable yet (architectural limit, not a defect); retry confirmed working on-device |
+| 2026-10-21 | Correction: Overall/Phase counters had stalled at 9/66 · 5/11 through FND-06 and FND-07 individually finishing, only updating when their shared E06 row got ticked. `Overall = done issues / 66`, not done execution-map rows — recounted to 12/66 · 8/11 (adds FND-06, FND-07, FND-09, all already individually done) |
+| 2026-10-21 | FND-09 done (test infrastructure, no manual step); E07 stays unticked pending FND-08's manual device-language check |
+| 2026-10-21 | FND-08's manual device-language check confirmed; E07 ticked — Phase 1 at 9/11, only FND-10 (go_router) and FND-11 (lint rules) left |

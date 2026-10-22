@@ -8,6 +8,7 @@ import 'package:mavie/core/widgets/app_loading_indicator.dart';
 import 'package:mavie/core/widgets/movie_poster.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
+import 'package:mavie/l10n/generated/app_localizations.dart';
 
 class MovieSearchPage extends ConsumerStatefulWidget {
   const MovieSearchPage({super.key});
@@ -35,13 +36,14 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
   @override
   Widget build(BuildContext context) {
     final resultsAsync = ref.watch(movieSearchResultsProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         title: TextField(
           autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Buscar filmes...',
+          decoration: InputDecoration(
+            hintText: l10n.searchHint,
             border: InputBorder.none,
           ),
           onChanged: _onQueryChanged,
@@ -50,7 +52,7 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
       body: resultsAsync.when(
         data: (movies) {
           if (movies.isEmpty) {
-            return const Center(child: Text('Digite algo para buscar'));
+            return Center(child: Text(l10n.searchEmptyPrompt));
           }
 
           return ListView.builder(

@@ -9,7 +9,7 @@ void main() {
 
   setUpAll(() {
     final raw = File(
-      'test/support/fixtures/tmdb_search_result.json',
+      'test/support/fixtures/search_movie.json',
     ).readAsStringSync();
     searchResultFixture =
         (jsonDecode(raw)['results'] as List).first as Map<String, dynamic>;

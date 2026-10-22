@@ -1,0 +1,64 @@
+{
+  "@@locale": "en",
+  "searchHint": "Search movies...",
+  "@searchHint": {
+    "description": "Hint text in the search field on the movie search screen"
+  },
+  "searchEmptyPrompt": "Type something to search",
+  "@searchEmptyPrompt": {
+    "description": "Shown before the user has typed a search query"
+  },
+  "detailsTitle": "Movie details",
+  "@detailsTitle": {
+    "description": "App bar title on the movie details screen"
+  },
+  "detailsRuntimeMinutes": "{minutes} min",
+  "@detailsRuntimeMinutes": {
+    "description": "Runtime shown in the details metadata line, e.g. '136 min'",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ratingUnrated": "Not rated",
+  "@ratingUnrated": {
+    "description": "Shown by RatingDisplay when rating is null, instead of a score"
+  },
+  "errorNetwork": "No connection. Check your internet and try again.",
+  "@errorNetwork": {
+    "description": "AppErrorView message for AppFailure.NetworkFailure"
+  },
+  "errorUnauthorized": "Your session expired. Please sign in again.",
+  "@errorUnauthorized": {
+    "description": "AppErrorView message for AppFailure.UnauthorizedFailure"
+  },
+  "errorForbidden": "You don't have permission to see this.",
+  "@errorForbidden": {
+    "description": "AppErrorView message for AppFailure.ForbiddenFailure"
+  },
+  "errorNotFound": "We couldn't find what you were looking for.",
+  "@errorNotFound": {
+    "description": "AppErrorView message for AppFailure.NotFoundFailure"
+  },
+  "errorValidation": "Something isn't valid. Check and try again.",
+  "@errorValidation": {
+    "description": "AppErrorView message for AppFailure.ValidationFailure"
+  },
+  "errorUnknown": "Something went wrong. Please try again.",
+  "@errorUnknown": {
+    "description": "AppErrorView message for AppFailure.UnknownFailure"
+  },
+  "retryButton": "Try again",
+  "@retryButton": {
+    "description": "Label of AppErrorView's retry button"
+  },
+  "libraryStatusWantToWatch": "Want to watch",
+  "@libraryStatusWantToWatch": {
+    "description": "System list name for MovieStatus.wantToWatch (LIB-01). Never stored in the database - client-side only, not wired to any screen yet"
+  },
+  "libraryStatusWatched": "Watched",
+  "@libraryStatusWatched": {
+    "description": "System list name for MovieStatus.watched (LIB-01). Never stored in the database - client-side only, not wired to any screen yet"
+  }
+}

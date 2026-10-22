@@ -26,9 +26,11 @@ Template: [[maintenance/_template]] is for change narratives; an ADR uses `## Co
 | [[architecture/decisions/0012-tmdb-key-in-client\|0012]] | TMDb key ships in the client — accepted risk | accepted |
 | [[architecture/decisions/0013-no-realtime-in-mvp\|0013]] | No Realtime in the MVP | accepted |
 | [[architecture/decisions/0014-hand-rolled-fakes\|0014]] | Hand-written fakes over a mocking package | accepted |
+| [[architecture/decisions/0015-tmdb-metadata-not-localized\|0015]] | TMDb film metadata is not localized | accepted |
 
 ## Maintenance
 
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Log created with the fourteen decisions behind the MVP |
+| 2026-10-21 | 0015 added: FND-08's open TMDb-language question decided |

@@ -1,46 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mavie/core/error/app_failure.dart';
-import 'package:mavie/features/movies/domain/entities/movie_details.dart';
 import 'package:mavie/features/movies/domain/entities/movie_summary.dart';
-import 'package:mavie/features/movies/domain/repositories/movie_repository.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_search_page.dart';
 import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
 
-class _FakeMovieRepository implements MovieRepository {
-  _FakeMovieRepository(this.movies);
-
-  final List<MovieSummary> movies;
-  int searchCallCount = 0;
-
-  @override
-  Future<MovieDetails> getMovieDetails(int id) async {
-    return MovieDetails(summary: movies.firstWhere((movie) => movie.id == id));
-  }
-
-  @override
-  Future<List<MovieSummary>> searchMovies(String query) async {
-    searchCallCount++;
-    return movies;
-  }
-}
-
-class _ThrowingMovieRepository implements MovieRepository {
-  int searchCallCount = 0;
-
-  @override
-  Future<MovieDetails> getMovieDetails(int id) async {
-    throw const NetworkFailure();
-  }
-
-  @override
-  Future<List<MovieSummary>> searchMovies(String query) async {
-    searchCallCount++;
-    throw const NetworkFailure();
-  }
-}
+import '../../../../support/fakes/fake_movie_repository.dart';
+import '../../../../support/pump_app.dart';
 
 void main() {
   final fakeMovies = [
@@ -57,27 +24,52 @@ void main() {
     ),
   ];
 
-  Widget buildTestApp(MovieRepository repository) {
-    return ProviderScope(
-      overrides: [movieRepositoryProvider.overrideWithValue(repository)],
-      child: const MaterialApp(home: MovieSearchPage()),
-    );
-  }
-
   testWidgets('shows a prompt before the user searches for anything', (
     tester,
   ) async {
-    await tester.pumpWidget(buildTestApp(_FakeMovieRepository(fakeMovies)));
+    await pumpApp(
+      tester,
+      const MovieSearchPage(),
+      overrides: [
+        movieRepositoryProvider.overrideWithValue(
+          FakeMovieRepository(searchResults: fakeMovies),
+        ),
+      ],
+    );
     await tester.pump();
 
-    expect(find.text('Digite algo para buscar'), findsOneWidget);
+    expect(find.text(l10nOf(tester).searchEmptyPrompt), findsOneWidget);
+  });
+
+  testWidgets('renders in English and in Portuguese, from the same keys', (
+    tester,
+  ) async {
+    for (final locale in [const Locale('en'), const Locale('pt')]) {
+      await pumpApp(
+        tester,
+        const MovieSearchPage(),
+        overrides: [
+          movieRepositoryProvider.overrideWithValue(
+            FakeMovieRepository(searchResults: fakeMovies),
+          ),
+        ],
+        locale: locale,
+      );
+      await tester.pump();
+
+      expect(find.text(l10nOf(tester).searchEmptyPrompt), findsOneWidget);
+    }
   });
 
   testWidgets('debounces typing and only searches once input settles', (
     tester,
   ) async {
-    final repository = _FakeMovieRepository(fakeMovies);
-    await tester.pumpWidget(buildTestApp(repository));
+    final repository = FakeMovieRepository(searchResults: fakeMovies);
+    await pumpApp(
+      tester,
+      const MovieSearchPage(),
+      overrides: [movieRepositoryProvider.overrideWithValue(repository)],
+    );
 
     await tester.enterText(find.byType(TextField), 'matrix');
     await tester.pump(const Duration(milliseconds: 100));
@@ -92,8 +84,12 @@ void main() {
   });
 
   testWidgets('tapping a result opens its details screen', (tester) async {
-    final repository = _FakeMovieRepository(fakeMovies);
-    await tester.pumpWidget(buildTestApp(repository));
+    final repository = FakeMovieRepository(searchResults: fakeMovies);
+    await pumpApp(
+      tester,
+      const MovieSearchPage(),
+      overrides: [movieRepositoryProvider.overrideWithValue(repository)],
+    );
 
     await tester.enterText(find.byType(TextField), 'matrix');
     await tester.pump(const Duration(milliseconds: 400));
@@ -113,29 +109,24 @@ void main() {
   testWidgets('shows AppErrorView with a working retry button on failure', (
     tester,
   ) async {
-    final repository = _ThrowingMovieRepository();
-    await tester.pumpWidget(
-      ProviderScope(
-        // Riverpod's own automatic retry (up to 10 attempts) would
-        // otherwise mask the error behind AsyncLoading — disabled here to
-        // isolate the explicit retry button this issue adds.
-        retry: (retryCount, error) => null,
-        overrides: [movieRepositoryProvider.overrideWithValue(repository)],
-        child: const MaterialApp(home: MovieSearchPage()),
-      ),
+    final repository = FakeMovieRepository(
+      searchFailure: const NetworkFailure(),
     );
+    await pumpApp(
+      tester,
+      const MovieSearchPage(),
+      overrides: [movieRepositoryProvider.overrideWithValue(repository)],
+    );
+    final l10n = l10nOf(tester);
 
     await tester.enterText(find.byType(TextField), 'matrix');
     await tester.pump(const Duration(milliseconds: 400));
     await tester.pump();
 
-    expect(
-      find.text('Sem conexão. Verifique sua internet e tente novamente.'),
-      findsOneWidget,
-    );
+    expect(find.text(l10n.errorNetwork), findsOneWidget);
     expect(repository.searchCallCount, 1);
 
-    await tester.tap(find.widgetWithText(FilledButton, 'Tentar novamente'));
+    await tester.tap(find.widgetWithText(FilledButton, l10n.retryButton));
     await tester.pump();
 
     expect(repository.searchCallCount, 2);
