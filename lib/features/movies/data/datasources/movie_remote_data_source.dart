@@ -1,23 +1,24 @@
 import 'package:dio/dio.dart';
-import '../models/movie_model.dart';
+import '../models/movie_details_model.dart';
+import '../models/movie_summary_model.dart';
 
 class MovieRemoteDataSource {
   final Dio dio;
 
   MovieRemoteDataSource(this.dio);
 
-  Future<MovieModel> getMovieDetails(int id) async {
+  Future<MovieDetailsModel> getMovieDetails(int id) async {
     final response = await dio.get('/movie/$id');
-    return MovieModel.fromJson(response.data);
+    return MovieDetailsModel.fromJson(response.data);
   }
 
-  Future<List<MovieModel>> searchMovies(String query) async {
+  Future<List<MovieSummaryModel>> searchMovies(String query) async {
     final response = await dio.get(
       '/search/movie',
       queryParameters: {'query': query},
     );
 
     final List<dynamic> results = response.data['results'];
-    return results.map((json) => MovieModel.fromJson(json)).toList();
+    return results.map((json) => MovieSummaryModel.fromJson(json)).toList();
   }
 }

@@ -23,10 +23,10 @@ Documented retroactively from the shipped code on 2026-10-21. This describes **w
 | Layer | File |
 |---|---|
 | Page | [movie_search_page.dart](../../../lib/features/movies/presentation/pages/movie_search_page.dart) — `ConsumerStatefulWidget`, a local `Timer` for the debounce, `Navigator.push(MaterialPageRoute(...))` on tap |
-| Providers | [movie_providers.dart](../../../lib/features/movies/presentation/providers/movie_providers.dart) — `tmdbDioProvider` → `movieRemoteDataSourceProvider` → `movieRepositoryProvider` (typed as the domain interface), `movieSearchQueryProvider` (`NotifierProvider<MovieSearchQueryNotifier, String>`), `movieSearchResultsProvider` (`FutureProvider<List<Movie>>` watching the query) |
-| Repository | [movie_repository.dart](../../../lib/features/movies/domain/repositories/movie_repository.dart) (interface) · [movie_repository_impl.dart](../../../lib/features/movies/data/repositories/movie_repository_impl.dart) (maps `MovieModel.toEntity()`) |
+| Providers | [movie_providers.dart](../../../lib/features/movies/presentation/providers/movie_providers.dart) — `tmdbDioProvider` → `movieRemoteDataSourceProvider` → `movieRepositoryProvider` (typed as the domain interface), `movieSearchQueryProvider` (`NotifierProvider<MovieSearchQueryNotifier, String>`), `movieSearchResultsProvider` (`FutureProvider<List<MovieSummary>>` watching the query) |
+| Repository | [movie_repository.dart](../../../lib/features/movies/domain/repositories/movie_repository.dart) (interface) · [movie_repository_impl.dart](../../../lib/features/movies/data/repositories/movie_repository_impl.dart) (maps `MovieSummaryModel.toEntity()`) |
 | Data source | [movie_remote_data_source.dart](../../../lib/features/movies/data/datasources/movie_remote_data_source.dart) — `GET /search/movie?query=` |
-| Entity / model | [movie.dart](../../../lib/features/movies/domain/entities/movie.dart) · [movie_model.dart](../../../lib/features/movies/data/models/movie_model.dart) |
+| Entity / model | [movie_summary.dart](../../../lib/features/movies/domain/entities/movie_summary.dart) · [movie_summary_model.dart](../../../lib/features/movies/data/models/movie_summary_model.dart) |
 
 Endpoint details: [[architecture/tmdb-integration]].
 
@@ -61,3 +61,4 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 |------|---------|
 | 2026-10-21 | Documented retroactively from the shipped code, with known gaps recorded |
 | 2026-10-21 | FND-02: moved to `features/movies/`; DI table folded into the providers row since `providers.dart` was dissolved and `movieClientProvider` renamed `tmdbDioProvider` |
+| 2026-10-21 | FND-04: search results are now `MovieSummary`, serialized by `MovieSummaryModel` (`fromJson` + `toJson`) |

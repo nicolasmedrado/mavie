@@ -66,12 +66,12 @@ Clients never write the cache directly. Writes happen inside `set_library_entry`
 
 ## Two entities, not one
 
-`/search/movie` results and `/movie/{id}` responses are different shapes, and the current `Movie` class forces both into one — which is why `runtime`, `genres`, `backdropPath` and `releaseDate` are missing today. FND-04 splits them:
+`/search/movie` results and `/movie/{id}` responses are different shapes. FND-04 split the single `Movie` class accordingly:
 
 - `MovieSummary` — search results, list items, cache rows
-- `MovieDetails` — the details screen and cache writes
+- `MovieDetails` — the details screen and cache writes; wraps a `MovieSummary` by composition
 
-`MovieModel` also has no `toJson`, which blocks the cache write path entirely. Same issue.
+Both model classes (`MovieSummaryModel`, `MovieDetailsModel`) have `fromJson` **and** `toJson`, the latter shaped to the `movies_cache` columns (snake_case, `tmdb_id` not `id`) so the RPC payload can be built directly from it.
 
 ## API key: accepted risk
 
@@ -94,3 +94,4 @@ plus the TMDb logo. Issue DOC-06.
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Documented the shipped client and endpoints; specified trailer, recommendations and the caching strategy |
+| 2026-10-21 | FND-04: `MovieSummary`/`MovieDetails` split landed, both models serializable both ways |

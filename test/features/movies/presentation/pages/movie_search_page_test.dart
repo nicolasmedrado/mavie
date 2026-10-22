@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mavie/features/movies/domain/entities/movie.dart';
+import 'package:mavie/features/movies/domain/entities/movie_details.dart';
+import 'package:mavie/features/movies/domain/entities/movie_summary.dart';
 import 'package:mavie/features/movies/domain/repositories/movie_repository.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_search_page.dart';
@@ -10,16 +11,16 @@ import 'package:mavie/features/movies/presentation/providers/movie_providers.dar
 class _FakeMovieRepository implements MovieRepository {
   _FakeMovieRepository(this.movies);
 
-  final List<Movie> movies;
+  final List<MovieSummary> movies;
   int searchCallCount = 0;
 
   @override
-  Future<Movie> getMovieDetails(int id) async {
-    return movies.firstWhere((movie) => movie.id == id);
+  Future<MovieDetails> getMovieDetails(int id) async {
+    return MovieDetails(summary: movies.firstWhere((movie) => movie.id == id));
   }
 
   @override
-  Future<List<Movie>> searchMovies(String query) async {
+  Future<List<MovieSummary>> searchMovies(String query) async {
     searchCallCount++;
     return movies;
   }
@@ -27,13 +28,13 @@ class _FakeMovieRepository implements MovieRepository {
 
 void main() {
   final fakeMovies = [
-    Movie(
+    MovieSummary(
       id: 603,
       title: 'The Matrix',
       overview: 'A hacker discovers reality is a simulation.',
       voteAverage: 8.7,
     ),
-    Movie(
+    MovieSummary(
       id: 604,
       title: 'The Matrix Reloaded',
       overview: 'Neo fights more agents.',
