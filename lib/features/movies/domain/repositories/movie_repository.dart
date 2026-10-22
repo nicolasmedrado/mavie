@@ -1,7 +1,8 @@
-import '../entities/movie.dart';
+import '../entities/movie_details.dart';
+import '../entities/movie_summary.dart';
 
 abstract class MovieRepository {
-  Future<Movie> getMovieDetails(int id);
+  Future<MovieDetails> getMovieDetails(int id);
 
-  Future<List<Movie>> searchMovies(String query);
+  Future<List<MovieSummary>> searchMovies(String query);
 }

@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mavie/core/network/tmdb_dio.dart';
 import 'package:mavie/features/movies/data/datasources/movie_remote_data_source.dart';
 import 'package:mavie/features/movies/data/repositories/movie_repository_impl.dart';
-import 'package:mavie/features/movies/domain/entities/movie.dart';
+import 'package:mavie/features/movies/domain/entities/movie_details.dart';
+import 'package:mavie/features/movies/domain/entities/movie_summary.dart';
 import 'package:mavie/features/movies/domain/repositories/movie_repository.dart';
 
 final tmdbDioProvider = Provider<Dio>((ref) {
@@ -20,7 +21,7 @@ final movieRepositoryProvider = Provider<MovieRepository>((ref) {
   return MovieRepositoryImpl(dataSource);
 });
 
-final movieDetailsProvider = FutureProvider.family<Movie, int>((
+final movieDetailsProvider = FutureProvider.family<MovieDetails, int>((
   ref,
   movieId,
 ) async {
@@ -42,7 +43,9 @@ final movieSearchQueryProvider =
       MovieSearchQueryNotifier.new,
     );
 
-final movieSearchResultsProvider = FutureProvider<List<Movie>>((ref) async {
+final movieSearchResultsProvider = FutureProvider<List<MovieSummary>>((
+  ref,
+) async {
   final query = ref.watch(movieSearchQueryProvider);
 
   if (query.trim().isEmpty) {

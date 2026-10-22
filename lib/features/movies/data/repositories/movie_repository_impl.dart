@@ -1,6 +1,7 @@
-import '../../domain/entities/movie.dart';
-import '../datasources/movie_remote_data_source.dart';
+import '../../domain/entities/movie_details.dart';
+import '../../domain/entities/movie_summary.dart';
 import '../../domain/repositories/movie_repository.dart';
+import '../datasources/movie_remote_data_source.dart';
 
 class MovieRepositoryImpl implements MovieRepository {
   final MovieRemoteDataSource remoteDataSource;
@@ -8,13 +9,13 @@ class MovieRepositoryImpl implements MovieRepository {
   MovieRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<Movie> getMovieDetails(int id) async {
+  Future<MovieDetails> getMovieDetails(int id) async {
     final model = await remoteDataSource.getMovieDetails(id);
     return model.toEntity();
   }
 
   @override
-  Future<List<Movie>> searchMovies(String query) async {
+  Future<List<MovieSummary>> searchMovies(String query) async {
     final models = await remoteDataSource.searchMovies(query);
     return models.map((model) => model.toEntity()).toList();
   }

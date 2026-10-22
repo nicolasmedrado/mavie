@@ -3,9 +3,9 @@ title: Entity split and serialization
 sprint: foundations
 feature: movie-details
 milestone: mvp
-status: backlog
-started_at:
-finished_at:
+status: done
+started_at: 2026-10-21
+finished_at: 2026-10-21
 ---
 
 # FND-04 · Entity split and serialization
@@ -44,22 +44,24 @@ Models: `MovieSummaryModel` and `MovieDetailsModel` with `fromJson`, `toJson` an
 
 ## Checklist
 
-- [ ] `MovieSummary` and `MovieDetails` in `features/movies/domain/entities/`
-- [ ] `==`, `hashCode`, `copyWith`, `const` constructors
-- [ ] `MovieSummaryModel` / `MovieDetailsModel` with `fromJson` + **`toJson`** + `toEntity`
-- [ ] Repository interface and implementation updated
-- [ ] `movieDetailsProvider` returns `MovieDetails`; `movieSearchResultsProvider` returns `List<MovieSummary>`
-- [ ] Details page renders year, runtime and genres
-- [ ] Model tests cover both shapes, missing-field defaults, and a `toJson` → `fromJson` round trip
-- [ ] Capture real TMDb JSON into `test/support/fixtures/` (coordinate with FND-09)
-- [ ] Tick the `toJson` row in [[_meta/discrepancies]]
+- [x] `MovieSummary` and `MovieDetails` in `features/movies/domain/entities/`
+- [x] `==`, `hashCode`, `copyWith`, `const` constructors
+- [x] `MovieSummaryModel` / `MovieDetailsModel` with `fromJson` + **`toJson`** + `toEntity`
+- [x] Repository interface and implementation updated
+- [x] `movieDetailsProvider` returns `MovieDetails`; `movieSearchResultsProvider` returns `List<MovieSummary>`
+- [x] Details page renders year, runtime and genres
+- [x] Model tests cover both shapes, missing-field defaults, and a `toJson` → `fromJson` round trip
+- [x] Capture real TMDb JSON into `test/support/fixtures/` (coordinate with FND-09)
+- [x] Tick the `toJson` row in [[_meta/discrepancies]]
 
 ## Test scenario
 
 1. Open a film with no runtime or no genres in TMDb
    - **Expected:** those rows are omitted, no crash, no "null"
+   - **Result:** covered by `movie_details_page_test.dart` and the minimal-fixture case in `movie_details_model_test.dart` — both green
 2. `toJson(fromJson(fixture))` equals the relevant subset of the fixture
    - **Expected:** round-trip stable — this is what `movies_cache` correctness depends on
+   - **Result:** covered for both models against real TMDb fixtures (`test/support/fixtures/`) — green. No manual step in this issue
 
 ## Dependencies
 
@@ -72,3 +74,4 @@ Models: `MovieSummaryModel` and `MovieDetailsModel` with `fromJson`, `toJson` an
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | `MovieSummary`/`MovieDetails` split, both models serializable both ways, details page renders year/runtime/genres. `flutter analyze` clean, 16 tests green, no manual step needed |

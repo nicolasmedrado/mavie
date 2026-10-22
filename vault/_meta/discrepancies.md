@@ -24,6 +24,7 @@ Divergences between documentation and reality (code, libraries, external APIs), 
 | 2026-10-21 | [movie_remote_data_source.dart](../../lib/data/datasources/movie_remote_data_source.dart) | Paginated search | `page` is never sent and `total_pages` is ignored — only the first 20 results are ever reachable | Pagination in MOV-04 |
 
 | 2026-10-21 | `pubspec.yaml` | `hive` / `hive_flutter` removed per FND-01 | Resolved — both removed, `flutter pub deps` confirms no trace, `flutter analyze`/`flutter test` clean | Row above (`hive`/`hive_flutter` never imported) closed |
+| 2026-10-21 | `movie_summary_model.dart` / `movie_details_model.dart` | Model serializable both ways, per FND-04 | Resolved — both models have `toJson`, snake_case `movies_cache`-shaped, covered by round-trip tests | Row above (`movie_model.dart` no `toJson`) closed |
 
 ## Maintenance
 
