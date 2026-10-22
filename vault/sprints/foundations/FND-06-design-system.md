@@ -3,9 +3,9 @@ title: Design system
 sprint: foundations
 feature: —
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-21
-finished_at:
+finished_at: 2026-10-21
 ---
 
 # FND-06 · Design system
@@ -48,7 +48,7 @@ Keep it small. The point is that every value has one home, not that the app need
 
 1. Run the app, switch the OS between light and dark
    - **Expected:** both themes legible, no invisible text, no white-on-white poster placeholder
-   - **Manual check — left to the user to run; not performed by Claude.** Roteiro: `flutter run` no device/emulador, trocar o tema do SO (claro/escuro) com o app aberto, confirmar que texto e poster placeholder continuam legíveis nos dois temas
+   - **Result:** confirmed on a physical Android device — legible in both themes, no invisible text, no white-on-white placeholder
 2. `grep -rnE "Colors\.|SizedBox\((width|height): [0-9]" lib/`
    - **Expected:** no hits outside `core/theme/`
    - **Result:** the only hits outside `core/theme/` are `AppColors.rating` / `AppColors.posterPlaceholder` — the token name itself contains the substring `Colors.`, not a hardcoded value. No literal `Colors.*` or numeric `SizedBox` left in the two pages
@@ -64,3 +64,4 @@ Keep it small. The point is that every value has one home, not that the app need
 |------|---------|
 | 2026-10-21 | issue created |
 | 2026-10-21 | Tokens added (`core/theme/`), `AppTheme.light`/`dark` wired in `app.dart`, both pages migrated. `flutter analyze` clean, 35 tests green. Pending your manual light/dark check |
+| 2026-10-21 | Manual light/dark check confirmed on a physical Android device — issue closed |
