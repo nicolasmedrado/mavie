@@ -3,9 +3,9 @@ title: l10n setup and string extraction
 sprint: foundations
 feature: localization
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-21
-finished_at:
+finished_at: 2026-10-21
 ---
 
 # FND-08 · l10n setup and string extraction
@@ -62,7 +62,7 @@ The Settings selector that writes `profiles.locale` is AUTH-07. Until accounts e
 
 1. Run with the device in Portuguese, then in English
    - **Expected:** full UI in each, no leftover literals
-   - **Manual check — left to the user to run; not performed by Claude.** Roteiro: trocar o idioma do dispositivo entre Português e Inglês (Configurações do Android → Idiomas), abrir o app em cada um, confirmar que busca, detalhes e a tela de erro (força um erro desligando a internet) aparecem totalmente no idioma certo, sem nenhum texto solto em português quando o idioma é inglês ou vice-versa
+   - **Result:** confirmed on a physical Android device, in both Portuguese and English — search, details, and the error/retry screen all fully in the right language
 2. `grep -rnE "Text\('[A-Za-zÀ-ú]" lib/`
    - **Expected:** no hits
    - **Result:** clean, no hits
@@ -82,3 +82,4 @@ The Settings selector that writes `profiles.locale` is AUTH-07. Until accounts e
 |------|---------|
 | 2026-10-21 | issue created |
 | 2026-10-21 | ARB files, `localeProvider`, every string extracted (including `AppErrorView`/`RatingDisplay`, added since this issue was written). TMDb-language question decided (ADR-0015). `flutter analyze --fatal-infos` clean, 43 tests green. Pending your manual device-language check |
+| 2026-10-21 | Manual device-language check confirmed on a physical device, PT and EN both fully localized. Issue closed |
