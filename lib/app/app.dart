@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mavie/core/theme/app_theme.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_search_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -8,9 +9,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mavie',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       home: const MovieSearchPage(),
     );
   }

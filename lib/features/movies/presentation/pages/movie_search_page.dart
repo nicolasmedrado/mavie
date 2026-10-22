@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mavie/core/network/tmdb_dio.dart';
+import 'package:mavie/core/theme/app_colors.dart';
+import 'package:mavie/core/theme/app_spacing.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
 
@@ -56,18 +58,20 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
               final movie = movies[index];
               return ListTile(
                 leading: SizedBox(
-                  width: 48,
-                  height: 72,
+                  width: AppSpacing.posterThumbnailWidth,
+                  height: AppSpacing.posterThumbnailHeight,
                   child: movie.posterPath != null
                       ? ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusSm,
+                          ),
                           child: Image.network(
                             '$tmdbImageBaseUrl${movie.posterPath}',
                             fit: BoxFit.cover,
                           ),
                         )
                       : const ColoredBox(
-                          color: Colors.black12,
+                          color: AppColors.posterPlaceholder,
                           child: Icon(Icons.movie_outlined),
                         ),
                 ),

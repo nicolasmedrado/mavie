@@ -62,3 +62,4 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 | 2026-10-21 | Documented retroactively from the shipped code, with known gaps recorded |
 | 2026-10-21 | FND-02: moved to `features/movies/`; DI table folded into the providers row since `providers.dart` was dissolved and `movieClientProvider` renamed `tmdbDioProvider` |
 | 2026-10-21 | FND-04: search results are now `MovieSummary`, serialized by `MovieSummaryModel` (`fromJson` + `toJson`) |
+| 2026-10-21 | FND-06: result tile's thumbnail size, radius and placeholder colour migrated onto `core/theme/` tokens |

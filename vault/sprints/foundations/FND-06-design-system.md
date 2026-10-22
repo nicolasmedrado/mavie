@@ -3,9 +3,9 @@ title: Design system
 sprint: foundations
 feature: —
 milestone: mvp
-status: backlog
-started_at:
-finished_at:
+status: done
+started_at: 2026-10-21
+finished_at: 2026-10-21
 ---
 
 # FND-06 · Design system
@@ -38,18 +38,20 @@ Keep it small. The point is that every value has one home, not that the app need
 
 ## Checklist
 
-- [ ] `AppColors`, `AppTypography`, `AppSpacing`, radius and elevation tokens
-- [ ] `AppTheme.light` and `AppTheme.dark`
-- [ ] `app.dart` wires `theme`, `darkTheme`, `themeMode: ThemeMode.system`
-- [ ] Migrate the two existing pages off their hardcoded values
-- [ ] A named token for the rating colour
+- [x] `AppColors`, `AppTypography`, `AppSpacing`, radius and elevation tokens
+- [x] `AppTheme.light` and `AppTheme.dark`
+- [x] `app.dart` wires `theme`, `darkTheme`, `themeMode: ThemeMode.system`
+- [x] Migrate the two existing pages off their hardcoded values
+- [x] A named token for the rating colour
 
 ## Test scenario
 
 1. Run the app, switch the OS between light and dark
    - **Expected:** both themes legible, no invisible text, no white-on-white poster placeholder
+   - **Result:** confirmed on a physical Android device — legible in both themes, no invisible text, no white-on-white placeholder
 2. `grep -rnE "Colors\.|SizedBox\((width|height): [0-9]" lib/`
    - **Expected:** no hits outside `core/theme/`
+   - **Result:** the only hits outside `core/theme/` are `AppColors.rating` / `AppColors.posterPlaceholder` — the token name itself contains the substring `Colors.`, not a hardcoded value. No literal `Colors.*` or numeric `SizedBox` left in the two pages
 
 ## Dependencies
 
@@ -61,3 +63,5 @@ Keep it small. The point is that every value has one home, not that the app need
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | Tokens added (`core/theme/`), `AppTheme.light`/`dark` wired in `app.dart`, both pages migrated. `flutter analyze` clean, 35 tests green. Pending your manual light/dark check |
+| 2026-10-21 | Manual light/dark check confirmed on a physical Android device — issue closed |
