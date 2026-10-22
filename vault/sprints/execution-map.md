@@ -14,7 +14,7 @@ last_review: 2026-10-21
 - When an issue finishes, tick it here, update its row in [[sprints/index]], and recalculate the phase and overall counters by hand.
 - `Overall = done / 66`.
 
-**Overall: 8% (5/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 9% (1/11)**
+**Overall: 11% (7/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 27% (3/11)**
 
 ---
 
@@ -29,13 +29,13 @@ Independent of everything. Done first so decisions are written as they are made,
 - [ ] (`DOC-01`) README rewrite — *better once the app looks like the product*
 - [ ] (`DOC-06`) TMDb attribution screen — *needs a Settings/About screen to live in*
 
-## Phase 1 — Foundations · 9% (1/11)
+## Phase 1 — Foundations · 27% (3/11)
 
 Everything here is cheap now and expensive later. **Do not start product features before this phase closes.**
 
 - [x] **E02** (`FND-01`) Dependency cleanup
-- [ ] **E03** (`FND-02`) **Feature-first restructure** — nine files today, ~80 at MVP. The cost grows superlinearly; this is the single most time-sensitive issue in the project — *automated checks green, pending manual `flutter run` check*
-- [ ] **E04** (`FND-03`) CI pipeline — guards every refactor that follows, so it comes before the risky ones — *workflow written, pending branch protection + live verification*
+- [x] **E03** (`FND-02`) **Feature-first restructure** — nine files today, ~80 at MVP. The cost grows superlinearly; this is the single most time-sensitive issue in the project
+- [x] **E04** (`FND-03`) CI pipeline — guards every refactor that follows, so it comes before the risky ones
 - [ ] **E05** (`FND-04`) Entity split and serialization ∥ (`FND-05`) `Result` and `AppFailure` — *independent of each other, both block UI work*
 - [ ] **E06** (`FND-06`) Design system → (`FND-07`) Shared widgets — *sequential: the widgets consume the tokens*
 - [ ] **E07** (`FND-08` + `FND-09`) **l10n and test infrastructure, together** — l10n breaks three existing tests and the harness is the fix. Splitting them means migrating the tests twice
@@ -119,5 +119,5 @@ When something blocks, pull from here instead of idling:
 |------|---------|
 | 2026-10-21 | Map created; Phase 0 documentation issues ticked as the vault was written |
 | 2026-10-21 | E02 (FND-01) ticked: Hive removed, Supabase/l10n/image-cache deps added |
-| 2026-10-21 | FND-02 restructure landed, automated checks green; E03 left unticked pending the manual `flutter run` check |
-| 2026-10-21 | FND-03 CI workflow written, local dry-run green; E04 left unticked pending branch protection + live verification |
+| 2026-10-21 | E03 (FND-02) ticked: manual check confirmed on a physical Android device |
+| 2026-10-21 | E04 (FND-03) ticked: live CI run green, branch protection applied on `main`. First block of Phase 1 (FND-01→03) closed |
