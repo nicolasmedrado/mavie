@@ -3,9 +3,9 @@ title: Result and AppFailure
 sprint: foundations
 feature: —
 milestone: mvp
-status: backlog
-started_at:
-finished_at:
+status: done
+started_at: 2026-10-21
+finished_at: 2026-10-21
 ---
 
 # FND-05 · `Result` and `AppFailure`
@@ -52,21 +52,24 @@ Each variant carries an l10n key, so messages are translatable by construction (
 
 ## Checklist
 
-- [ ] Sealed `AppFailure` hierarchy with l10n keys
-- [ ] Sealed `Result<T>`
-- [ ] `failure_mapper.dart` for the three exception families
-- [ ] `MovieRepositoryImpl` catches and rethrows mapped failures
-- [ ] Unit tests: each source exception maps to the expected variant
-- [ ] An exhaustive `switch` over `AppFailure` compiles without a default clause — that is the property worth protecting
+- [x] Sealed `AppFailure` hierarchy with l10n keys
+- [x] Sealed `Result<T>`
+- [x] `failure_mapper.dart` for the three exception families
+- [x] `MovieRepositoryImpl` catches and rethrows mapped failures
+- [x] Unit tests: each source exception maps to the expected variant
+- [x] An exhaustive `switch` over `AppFailure` compiles without a default clause — that is the property worth protecting
 
 ## Test scenario
 
 1. Point the Dio base URL at an unreachable host, open search
    - **Expected:** `NetworkFailure`, not a raw `DioException`
+   - **Result:** covered end to end in `movie_repository_impl_test.dart` (a connection-error `DioException` rethrows as `NetworkFailure`) and exhaustively per `DioExceptionType` in `failure_mapper_test.dart`
 2. Disable the network mid-request
    - **Expected:** `NetworkFailure`, and the retry action works once connectivity returns
+   - **Not exercised** — there is no retry action yet (`AppErrorView` is FND-07); revisit this scenario once FND-07 lands
 3. Add a new `AppFailure` variant
    - **Expected:** the build breaks at every unhandled `switch`
+   - **Result:** `app_failure_test.dart` has an exhaustive `switch` over every variant with no `default` — the property is enforced by the compiler, demonstrated by the test compiling and passing at all
 
 ## Dependencies
 
@@ -79,3 +82,4 @@ Each variant carries an l10n key, so messages are translatable by construction (
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | `AppFailure`/`Result`/`failure_mapper` added; `MovieRepositoryImpl` rethrows mapped failures. `flutter analyze` clean, 35 tests green. Test scenario 2 (retry after reconnect) deferred to FND-07, no retry action exists yet |

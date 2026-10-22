@@ -79,7 +79,7 @@ Two paths, deliberately different — [[architecture/decisions/0009-result-for-c
 - **Reads.** Data sources throw; repositories catch and rethrow a sealed `AppFailure`; providers surface it as `AsyncValue.error`; one `AppErrorView` switches on the failure type and renders a localized message with a retry. `AsyncValue` already *is* a result type for reads — wrapping another one inside it would mean unwrapping twice at every call site.
 - **Writes.** Repositories return `Result<T>` (`Ok` | `Err`). Sign-in, rating, creating a list all need inline feedback — a field error under an input, a snackbar with rollback of an optimistic update — which an exception travelling through `AsyncValue` fits badly. An exhaustive `switch` on a sealed `Result` is checked by the compiler.
 
-Today neither exists: exceptions propagate raw and render as `Text('Erro: $error')`. FND-05.
+`AppFailure` and `Result` landed in FND-05 (`core/error/{app_failure,result,failure_mapper}.dart`). `MovieRepositoryImpl` catches and rethrows mapped failures for both reads today — writes return `Result<T>` from AUTH-02 onward, once the first write repository exists. Screens still render the raw `AsyncValue.error` as `Text('Erro: $error')`, since `AppErrorView` (FND-07) is what actually consumes the failure type.
 
 ## Navigation
 
@@ -133,3 +133,5 @@ The recommendation ranking (HOME-02) is written as a **pure function** over seed
 |------|---------|
 | 2026-10-21 | Written from the shipped code plus the MVP architecture decisions |
 | 2026-10-21 | FND-02 landed: feature-first layout, `tmdbDioProvider` rename, `app/` bootstrap/app split |
+| 2026-10-21 | FND-04 landed: `MovieSummary`/`MovieDetails` split, both serializable both ways |
+| 2026-10-21 | FND-05 landed: `AppFailure`/`Result`/`failure_mapper`, `MovieRepositoryImpl` rethrows mapped failures |

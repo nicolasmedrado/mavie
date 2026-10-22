@@ -14,7 +14,7 @@ last_review: 2026-10-21
 - When an issue finishes, tick it here, update its row in [[sprints/index]], and recalculate the phase and overall counters by hand.
 - `Overall = done / 66`.
 
-**Overall: 12% (8/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 36% (4/11)**
+**Overall: 14% (9/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 45% (5/11)**
 
 ---
 
@@ -29,14 +29,14 @@ Independent of everything. Done first so decisions are written as they are made,
 - [ ] (`DOC-01`) README rewrite — *better once the app looks like the product*
 - [ ] (`DOC-06`) TMDb attribution screen — *needs a Settings/About screen to live in*
 
-## Phase 1 — Foundations · 36% (4/11)
+## Phase 1 — Foundations · 45% (5/11)
 
 Everything here is cheap now and expensive later. **Do not start product features before this phase closes.**
 
 - [x] **E02** (`FND-01`) Dependency cleanup
 - [x] **E03** (`FND-02`) **Feature-first restructure** — nine files today, ~80 at MVP. The cost grows superlinearly; this is the single most time-sensitive issue in the project
 - [x] **E04** (`FND-03`) CI pipeline — guards every refactor that follows, so it comes before the risky ones
-- [ ] **E05** (`FND-04`) Entity split and serialization ∥ (`FND-05`) `Result` and `AppFailure` — *independent of each other, both block UI work* — *FND-04 done, FND-05 in progress*
+- [x] **E05** (`FND-04`) Entity split and serialization ∥ (`FND-05`) `Result` and `AppFailure` — *independent of each other, both block UI work*
 - [ ] **E06** (`FND-06`) Design system → (`FND-07`) Shared widgets — *sequential: the widgets consume the tokens*
 - [ ] **E07** (`FND-08` + `FND-09`) **l10n and test infrastructure, together** — l10n breaks three existing tests and the harness is the fix. Splitting them means migrating the tests twice
 - [ ] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06**
@@ -122,3 +122,4 @@ When something blocks, pull from here instead of idling:
 | 2026-10-21 | E03 (FND-02) ticked: manual check confirmed on a physical Android device |
 | 2026-10-21 | E04 (FND-03) ticked: live CI run green, branch protection applied on `main`. First block of Phase 1 (FND-01→03) closed |
 | 2026-10-21 | FND-04 done (entity split); E05 stays unticked until FND-05 also lands |
+| 2026-10-21 | FND-05 done (`AppFailure`/`Result`/`failure_mapper`); E05 ticked — both halves closed |
