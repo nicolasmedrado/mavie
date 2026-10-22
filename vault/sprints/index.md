@@ -34,7 +34,7 @@ Only the **FND** issues have their own files so far. The rest are specified here
 | [[sprints/foundations/FND-03-ci-pipeline\|FND-03]] | GitHub Actions: format, analyze, test with coverage; branch protection | done |
 | [[sprints/foundations/FND-04-entity-split\|FND-04]] | `MovieSummary` / `MovieDetails`; add the discarded fields; add `toJson` | done |
 | [[sprints/foundations/FND-05-result-and-failures\|FND-05]] | Sealed `AppFailure` + `Result`, and mappers for the three exception families | done |
-| [[sprints/foundations/FND-06-design-system\|FND-06]] | `AppTheme` light and dark, colour, typography and spacing tokens | backlog |
+| [[sprints/foundations/FND-06-design-system\|FND-06]] | `AppTheme` light and dark, colour, typography and spacing tokens | in_progress — automated checks green, pending your manual light/dark check |
 | [[sprints/foundations/FND-07-shared-widgets\|FND-07]] | `MoviePoster`, `RatingDisplay`, `AppErrorView`, `AppEmptyView`, `AppLoadingIndicator` | backlog |
 | [[sprints/foundations/FND-08-l10n-setup\|FND-08]] | `l10n.yaml`, `app_en.arb`, `app_pt.arb`; extract every hardcoded string | backlog |
 | [[sprints/foundations/FND-09-test-infrastructure\|FND-09]] | `test/support/`: `pumpApp`, shared fakes, JSON fixtures; migrate the broken assertions | backlog |

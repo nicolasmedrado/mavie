@@ -38,7 +38,6 @@ Shares its repository and DI graph with [[features/movie-search/_overview]]; `Mo
 ## Known gaps
 
 - Poster logic duplicated with the search page. FND-07.
-- Styling is ad-hoc: hardcoded `Colors.amber`, literal `SizedBox` spacings, `BorderRadius.circular(8)`. FND-06.
 - Portuguese strings (`'Detalhes do filme'`, `'Erro: $error'`). FND-08.
 - No `errorBuilder` on `Image.network`. FND-07.
 
@@ -63,3 +62,4 @@ This screen is where most of the MVP converges.
 | 2026-10-21 | Documented retroactively from the shipped code, with known gaps recorded |
 | 2026-10-21 | FND-02: moved to `features/movies/` |
 | 2026-10-21 | FND-04: entity split into `MovieSummary`/`MovieDetails`; details page now renders year, runtime and genres; `toJson` added |
+| 2026-10-21 | FND-06: migrated off hardcoded `Colors.amber`/`SizedBox`/`BorderRadius.circular` onto `core/theme/` tokens |

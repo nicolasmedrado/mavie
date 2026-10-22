@@ -101,7 +101,7 @@ While the session is still being restored from secure storage the router pins to
 
 ## Design system
 
-`core/theme/` with colour, typography and spacing tokens, light and dark. Today the entire theme is `ColorScheme.fromSeed(seedColor: Colors.deepPurple)` and styling is ad-hoc per widget — hardcoded `Colors.amber`, literal `SizedBox(height: 16)`, `BorderRadius.circular(4)`. FND-06, then FND-07 for the shared widgets that consume the tokens.
+`core/theme/{app_colors,app_spacing,app_typography,app_theme}.dart` — landed in FND-06. `AppTheme.light`/`AppTheme.dark` both build on `ColorScheme.fromSeed(seedColor: AppColors.seed)`, wired in `app.dart` with `themeMode: ThemeMode.system`. `AppColors.rating` is the one color with nowhere else to live — used on the details screen today, in list rows, member chips and carousels later; everything else comes from `Theme.of(context).colorScheme` (e.g. `onSurfaceVariant` for muted text) rather than a new named constant. `AppSpacing` is a 4pt scale (`xs 4` … `xl 32`) plus radius and elevation tokens — both existing pages are migrated off their literal `SizedBox`/`BorderRadius.circular`/`Colors.*` values. FND-07 is next, for the shared widgets that consume these tokens (`MoviePoster`, `RatingDisplay`, `AppErrorView`, `AppEmptyView`, `AppLoadingIndicator`).
 
 ## Localization
 
@@ -135,3 +135,4 @@ The recommendation ranking (HOME-02) is written as a **pure function** over seed
 | 2026-10-21 | FND-02 landed: feature-first layout, `tmdbDioProvider` rename, `app/` bootstrap/app split |
 | 2026-10-21 | FND-04 landed: `MovieSummary`/`MovieDetails` split, both serializable both ways |
 | 2026-10-21 | FND-05 landed: `AppFailure`/`Result`/`failure_mapper`, `MovieRepositoryImpl` rethrows mapped failures |
+| 2026-10-21 | FND-06 landed: `core/theme/` tokens, `AppTheme.light`/`dark`, both pages migrated off hardcoded values |

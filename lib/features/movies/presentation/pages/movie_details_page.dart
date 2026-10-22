@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mavie/core/network/tmdb_dio.dart';
+import 'package:mavie/core/theme/app_colors.dart';
+import 'package:mavie/core/theme/app_spacing.dart';
 import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
 
 class MovieDetailsPage extends ConsumerWidget {
@@ -27,40 +29,40 @@ class MovieDetailsPage extends ConsumerWidget {
           ];
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (movie.posterPath != null)
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                     child: Image.network(
                       '$tmdbImageBaseUrl${movie.posterPath}',
                     ),
                   ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   movie.title,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 if (metadataParts.isNotEmpty) ...[
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     metadataParts.join(' · '),
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Row(
                   children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 20),
-                    const SizedBox(width: 4),
+                    const Icon(Icons.star, color: AppColors.rating, size: 20),
+                    const SizedBox(width: AppSpacing.xs),
                     Text(movie.voteAverage.toStringAsFixed(1)),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.md),
                 Text(movie.overview),
               ],
             ),
