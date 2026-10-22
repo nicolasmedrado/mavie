@@ -15,8 +15,11 @@ class AppSpacing {
   static const double elevationSm = 1;
   static const double elevationMd = 3;
 
-  /// Search-result thumbnail poster size. Becomes a `MoviePoster` size
-  /// variant in FND-07.
+  /// `MoviePoster` size variants (FND-07) — a consistent 2:3 poster ratio.
   static const double posterThumbnailWidth = 48;
   static const double posterThumbnailHeight = 72;
+  static const double posterCardWidth = 100;
+  static const double posterCardHeight = 150;
+  static const double posterHeroWidth = 160;
+  static const double posterHeroHeight = 240;
 }

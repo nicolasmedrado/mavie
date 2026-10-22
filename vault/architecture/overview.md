@@ -79,7 +79,9 @@ Two paths, deliberately different — [[architecture/decisions/0009-result-for-c
 - **Reads.** Data sources throw; repositories catch and rethrow a sealed `AppFailure`; providers surface it as `AsyncValue.error`; one `AppErrorView` switches on the failure type and renders a localized message with a retry. `AsyncValue` already *is* a result type for reads — wrapping another one inside it would mean unwrapping twice at every call site.
 - **Writes.** Repositories return `Result<T>` (`Ok` | `Err`). Sign-in, rating, creating a list all need inline feedback — a field error under an input, a snackbar with rollback of an optimistic update — which an exception travelling through `AsyncValue` fits badly. An exhaustive `switch` on a sealed `Result` is checked by the compiler.
 
-`AppFailure` and `Result` landed in FND-05 (`core/error/{app_failure,result,failure_mapper}.dart`). `MovieRepositoryImpl` catches and rethrows mapped failures for both reads today — writes return `Result<T>` from AUTH-02 onward, once the first write repository exists. Screens still render the raw `AsyncValue.error` as `Text('Erro: $error')`, since `AppErrorView` (FND-07) is what actually consumes the failure type.
+`AppFailure` and `Result` landed in FND-05 (`core/error/{app_failure,result,failure_mapper}.dart`). `MovieRepositoryImpl` catches and rethrows mapped failures for both reads today — writes return `Result<T>` from AUTH-02 onward, once the first write repository exists. Both screens now render `AppErrorView` (FND-07, `core/widgets/app_error_view.dart`), which switches on the failure and wires a real retry action via `ref.invalidate`. Messages are hardcoded Portuguese for now — they become a real `AppFailure.l10nKey` lookup once FND-08 adds l10n.
+
+> **Riverpod retries before you see an error.** `ProviderContainer.defaultRetry` retries a failed provider up to 10 times with exponential backoff (capped at 6.4s, ~38s total) before `AsyncValue` ever reaches `error` — `.when()` treats a retrying failure as `AsyncLoading` the whole time. Found while testing FND-07's retry button. Disabled app-wide in `main.dart` (`ProviderScope(retry: (_, __) => null, ...)`), since `AppErrorView`'s explicit retry is the intended recovery path, not a silent ~38s background one. Widget tests that exercise an error path must pass the same `retry: (_, __) => null` override to their own `ProviderScope`, since each test builds its own container.
 
 ## Navigation
 
@@ -101,7 +103,9 @@ While the session is still being restored from secure storage the router pins to
 
 ## Design system
 
-`core/theme/{app_colors,app_spacing,app_typography,app_theme}.dart` — landed in FND-06. `AppTheme.light`/`AppTheme.dark` both build on `ColorScheme.fromSeed(seedColor: AppColors.seed)`, wired in `app.dart` with `themeMode: ThemeMode.system`. `AppColors.rating` is the one color with nowhere else to live — used on the details screen today, in list rows, member chips and carousels later; everything else comes from `Theme.of(context).colorScheme` (e.g. `onSurfaceVariant` for muted text) rather than a new named constant. `AppSpacing` is a 4pt scale (`xs 4` … `xl 32`) plus radius and elevation tokens — both existing pages are migrated off their literal `SizedBox`/`BorderRadius.circular`/`Colors.*` values. FND-07 is next, for the shared widgets that consume these tokens (`MoviePoster`, `RatingDisplay`, `AppErrorView`, `AppEmptyView`, `AppLoadingIndicator`).
+`core/theme/{app_colors,app_spacing,app_typography,app_theme}.dart` — landed in FND-06. `AppTheme.light`/`AppTheme.dark` both build on `ColorScheme.fromSeed(seedColor: AppColors.seed)`, wired in `app.dart` with `themeMode: ThemeMode.system`. `AppColors.rating` is the one color with nowhere else to live — used on the details screen today, in list rows, member chips and carousels later; everything else comes from `Theme.of(context).colorScheme` (e.g. `onSurfaceVariant` for muted text) rather than a new named constant. `AppSpacing` is a 4pt scale (`xs 4` … `xl 32`) plus radius, elevation and poster-size tokens.
+
+`core/widgets/` — landed in FND-07, built on the tokens above: `MoviePoster` (takes a `posterPath`, not a `Movie`; three size variants; `cached_network_image` with a styled placeholder for the null/loading/error cases), `RatingDisplay` (`double?` — `null` is unrated, `0` is a real score), `AppErrorView` (see Error handling above), `AppEmptyView`, `AppLoadingIndicator`. Both existing pages are fully migrated: no more literal `SizedBox`/`BorderRadius.circular`/`Colors.*`/`Image.network`.
 
 ## Localization
 
@@ -136,3 +140,4 @@ The recommendation ranking (HOME-02) is written as a **pure function** over seed
 | 2026-10-21 | FND-04 landed: `MovieSummary`/`MovieDetails` split, both serializable both ways |
 | 2026-10-21 | FND-05 landed: `AppFailure`/`Result`/`failure_mapper`, `MovieRepositoryImpl` rethrows mapped failures |
 | 2026-10-21 | FND-06 landed: `core/theme/` tokens, `AppTheme.light`/`dark`, both pages migrated off hardcoded values |
+| 2026-10-21 | FND-07 landed: `core/widgets/` (`MoviePoster`, `RatingDisplay`, `AppErrorView`, `AppEmptyView`, `AppLoadingIndicator`); found and fixed Riverpod's default ~38s auto-retry masking errors |

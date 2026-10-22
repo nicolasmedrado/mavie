@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mavie/core/network/tmdb_dio.dart';
-import 'package:mavie/core/theme/app_colors.dart';
-import 'package:mavie/core/theme/app_spacing.dart';
+import 'package:mavie/core/error/app_failure.dart';
+import 'package:mavie/core/widgets/app_error_view.dart';
+import 'package:mavie/core/widgets/app_loading_indicator.dart';
+import 'package:mavie/core/widgets/movie_poster.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
 
@@ -57,23 +58,9 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
             itemBuilder: (context, index) {
               final movie = movies[index];
               return ListTile(
-                leading: SizedBox(
-                  width: AppSpacing.posterThumbnailWidth,
-                  height: AppSpacing.posterThumbnailHeight,
-                  child: movie.posterPath != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                            AppSpacing.radiusSm,
-                          ),
-                          child: Image.network(
-                            '$tmdbImageBaseUrl${movie.posterPath}',
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : const ColoredBox(
-                          color: AppColors.posterPlaceholder,
-                          child: Icon(Icons.movie_outlined),
-                        ),
+                leading: MoviePoster(
+                  posterPath: movie.posterPath,
+                  size: MoviePosterSize.thumbnail,
                 ),
                 title: Text(movie.title),
                 subtitle: Text(
@@ -92,8 +79,13 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
             },
           );
         },
-        error: (error, stackTrace) => Center(child: Text('Erro: $error')),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => AppErrorView(
+          failure: error is AppFailure
+              ? error
+              : UnknownFailure(error, stackTrace),
+          onRetry: () => ref.invalidate(movieSearchResultsProvider),
+        ),
+        loading: () => const AppLoadingIndicator(),
       ),
     );
   }

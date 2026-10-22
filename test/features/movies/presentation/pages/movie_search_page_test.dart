@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mavie/core/error/app_failure.dart';
 import 'package:mavie/features/movies/domain/entities/movie_details.dart';
 import 'package:mavie/features/movies/domain/entities/movie_summary.dart';
 import 'package:mavie/features/movies/domain/repositories/movie_repository.dart';
@@ -23,6 +24,21 @@ class _FakeMovieRepository implements MovieRepository {
   Future<List<MovieSummary>> searchMovies(String query) async {
     searchCallCount++;
     return movies;
+  }
+}
+
+class _ThrowingMovieRepository implements MovieRepository {
+  int searchCallCount = 0;
+
+  @override
+  Future<MovieDetails> getMovieDetails(int id) async {
+    throw const NetworkFailure();
+  }
+
+  @override
+  Future<List<MovieSummary>> searchMovies(String query) async {
+    searchCallCount++;
+    throw const NetworkFailure();
   }
 }
 
@@ -92,5 +108,36 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('8.7'), findsOneWidget);
+  });
+
+  testWidgets('shows AppErrorView with a working retry button on failure', (
+    tester,
+  ) async {
+    final repository = _ThrowingMovieRepository();
+    await tester.pumpWidget(
+      ProviderScope(
+        // Riverpod's own automatic retry (up to 10 attempts) would
+        // otherwise mask the error behind AsyncLoading — disabled here to
+        // isolate the explicit retry button this issue adds.
+        retry: (retryCount, error) => null,
+        overrides: [movieRepositoryProvider.overrideWithValue(repository)],
+        child: const MaterialApp(home: MovieSearchPage()),
+      ),
+    );
+
+    await tester.enterText(find.byType(TextField), 'matrix');
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump();
+
+    expect(
+      find.text('Sem conexão. Verifique sua internet e tente novamente.'),
+      findsOneWidget,
+    );
+    expect(repository.searchCallCount, 1);
+
+    await tester.tap(find.widgetWithText(FilledButton, 'Tentar novamente'));
+    await tester.pump();
+
+    expect(repository.searchCallCount, 2);
   });
 }
