@@ -3,9 +3,9 @@ title: Lint rules
 sprint: foundations
 feature: —
 milestone: mvp
-status: backlog
-started_at:
-finished_at:
+status: done
+started_at: 2026-10-21
+finished_at: 2026-10-21
 ---
 
 # FND-11 · Lint rules
@@ -55,18 +55,20 @@ A `custom_lint` rule enforcing the feature-first dependency boundary ([[architec
 
 ## Checklist
 
-- [ ] `strict-casts` and `strict-raw-types` on
-- [ ] The rules above enabled
-- [ ] `flutter analyze --fatal-infos` clean
-- [ ] CI already runs `--fatal-infos` (FND-03)
-- [ ] Any rule deliberately rejected gets a comment in the file saying why
+- [x] `strict-casts` and `strict-raw-types` on
+- [x] The rules above enabled — `avoid_print` and `use_build_context_synchronously` turned out to already be on via `flutter_lints/flutter.yaml`, so only the other six were new
+- [x] `flutter analyze --fatal-infos` clean
+- [x] CI already runs `--fatal-infos` (FND-03)
+- [x] Any rule deliberately rejected gets a comment in the file saying why
 
 ## Test scenario
 
 1. `flutter analyze --fatal-infos`
    - **Expected:** zero issues
+   - **Result:** clean, after fixing what `strict-casts` found for real: `dio.get(...)` was untyped (`dynamic`) in `movie_remote_data_source.dart`, requiring an unchecked cast at every call site. Now `dio.get<Map<String, dynamic>>(...)` with explicit `as` casts at the one remaining dynamic boundary (the JSON array). Also fixed: 2 un-const constructors, `pubspec.yaml` dependency order
 2. Write `final double x = someJson['rating'];`
    - **Expected:** `strict-casts` rejects it
+   - **Result:** confirmed — `invalid_assignment`, exactly as predicted for the eventual `user_movies.rating` parsing ([[features/library/_overview]])
 
 ## Dependencies
 
@@ -78,3 +80,4 @@ A `custom_lint` rule enforcing the feature-first dependency boundary ([[architec
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | `strict-casts`/`strict-raw-types` on, six new rules, two already covered by `flutter_lints` noted rather than re-added. `strict-casts` caught a real untyped `dio.get` in the data source — fixed. `flutter analyze --fatal-infos` clean, 44 tests green. No manual step. Closes Phase 1 (Foundations) |

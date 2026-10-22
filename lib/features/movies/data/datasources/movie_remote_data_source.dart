@@ -8,17 +8,19 @@ class MovieRemoteDataSource {
   MovieRemoteDataSource(this.dio);
 
   Future<MovieDetailsModel> getMovieDetails(int id) async {
-    final response = await dio.get('/movie/$id');
-    return MovieDetailsModel.fromJson(response.data);
+    final response = await dio.get<Map<String, dynamic>>('/movie/$id');
+    return MovieDetailsModel.fromJson(response.data!);
   }
 
   Future<List<MovieSummaryModel>> searchMovies(String query) async {
-    final response = await dio.get(
+    final response = await dio.get<Map<String, dynamic>>(
       '/search/movie',
       queryParameters: {'query': query},
     );
 
-    final List<dynamic> results = response.data['results'];
-    return results.map((json) => MovieSummaryModel.fromJson(json)).toList();
+    final results = response.data!['results'] as List<dynamic>;
+    return results
+        .map((json) => MovieSummaryModel.fromJson(json as Map<String, dynamic>))
+        .toList();
   }
 }

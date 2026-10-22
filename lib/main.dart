@@ -5,7 +5,7 @@ import 'package:mavie/app/bootstrap.dart';
 
 Future<void> main() async {
   await bootstrap();
-  runApp(ProviderScope(retry: _noRetry, child: const MyApp()));
+  runApp(const ProviderScope(retry: _noRetry, child: MyApp()));
 }
 
 // Riverpod retries a failed provider up to 10 times with exponential
