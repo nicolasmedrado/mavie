@@ -13,13 +13,13 @@ import '../../../../support/pump_app.dart';
 
 void main() {
   final fakeMovies = [
-    MovieSummary(
+    const MovieSummary(
       id: 603,
       title: 'The Matrix',
       overview: 'A hacker discovers reality is a simulation.',
       voteAverage: 8.7,
     ),
-    MovieSummary(
+    const MovieSummary(
       id: 604,
       title: 'The Matrix Reloaded',
       overview: 'Neo fights more agents.',

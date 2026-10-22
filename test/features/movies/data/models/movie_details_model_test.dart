@@ -9,14 +9,20 @@ void main() {
   late Map<String, dynamic> minimalFixture;
 
   setUpAll(() {
-    detailsFixture = jsonDecode(
-      File('test/support/fixtures/movie_details.json').readAsStringSync(),
-    );
-    minimalFixture = jsonDecode(
-      File(
-        'test/support/fixtures/movie_details_minimal.json',
-      ).readAsStringSync(),
-    );
+    detailsFixture =
+        jsonDecode(
+              File(
+                'test/support/fixtures/movie_details.json',
+              ).readAsStringSync(),
+            )
+            as Map<String, dynamic>;
+    minimalFixture =
+        jsonDecode(
+              File(
+                'test/support/fixtures/movie_details_minimal.json',
+              ).readAsStringSync(),
+            )
+            as Map<String, dynamic>;
   });
 
   test('fromJson parses every field TMDB returns', () {

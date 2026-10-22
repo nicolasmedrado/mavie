@@ -151,3 +151,4 @@ The recommendation ranking (HOME-02) is written as a **pure function** over seed
 | 2026-10-21 | FND-07 landed: `core/widgets/` (`MoviePoster`, `RatingDisplay`, `AppErrorView`, `AppEmptyView`, `AppLoadingIndicator`); found and fixed Riverpod's default ~38s auto-retry masking errors |
 | 2026-10-21 | FND-08 + FND-09 landed: l10n (`localeProvider`, every string extracted) and `test/support/` (`pumpApp`, generalized fakes, real fixtures). Testing section's stale pre-FND-02 paths also corrected in passing |
 | 2026-10-21 | FND-10 landed: `go_router` adoption, `MaterialApp.router`, four-tab shell with placeholder routes. `pump_app.dart`'s `pumpApp` gained an optional `routes` param for tests that need real navigation |
+| 2026-10-21 | FND-11 landed: `strict-casts`/`strict-raw-types` on, caught an untyped `dio.get` in the data source. **Phase 1 — Foundations closed, 11/11** |
