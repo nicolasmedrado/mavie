@@ -3,9 +3,9 @@ title: CI pipeline
 sprint: foundations
 feature: —
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-21
-finished_at:
+finished_at: 2026-10-21
 ---
 
 # FND-03 · CI pipeline
@@ -46,19 +46,22 @@ That is also a useful property to preserve: **no test should ever need a real AP
 - [x] `cp .env.example .env` before the test step
 - [x] Cache `~/.pub-cache`
 - [x] Upload the coverage artifact (no threshold gate yet — current coverage is partial and a failing gate on day one just gets disabled)
-- [ ] Branch protection on `main`: require the check, no direct pushes — **not done by Claude**, a GitHub repo-settings change affecting shared state. Needs to be set manually (or confirmed) once the workflow is on `main`
+- [x] Branch protection on `main`: require the check, no direct pushes — `required_status_checks: ["test"]` (strict), `required_pull_request_reviews` with 0 required approvals (solo project), `enforce_admins: false`
 - [x] Add a CI badge to the README
 
 ## Test scenario
 
-All three steps ran locally with the exact commands the workflow uses (`dart format --output=none --set-exit-if-changed .`, `flutter analyze --fatal-infos`, `flutter test --coverage`) — all green. The scenarios below need the workflow actually running on GitHub, left for manual verification once pushed:
+All three steps ran locally with the exact commands the workflow uses (`dart format --output=none --set-exit-if-changed .`, `flutter analyze --fatal-infos`, `flutter test --coverage`) — all green.
 
 1. Open a pull request with a deliberately badly formatted file
    - **Expected:** the format step fails and the PR is blocked
+   - Not exercised — no throwaway PR opened for this
 2. Open a pull request with a failing test
    - **Expected:** the test step fails
+   - Not exercised — no throwaway PR opened for this
 3. Push a clean branch
    - **Expected:** all three steps green in under ~3 minutes
+   - **Result:** PR #10's check and the resulting push-to-`main` run both completed `success` in 1m50s ([run 39692588456](https://github.com/nicolasmedrado/mavie/actions/runs/39692588456))
 
 ## Dependencies
 
@@ -71,3 +74,5 @@ All three steps ran locally with the exact commands the workflow uses (`dart for
 |------|---------|
 | 2026-10-21 | issue created |
 | 2026-10-21 | `.github/workflows/ci.yml` added, CI badge added to README. Branch protection and the live on-GitHub gate verification left for the user |
+| 2026-10-21 | Live run confirmed green on GitHub (run 39692588456, 1m50s). Branch protection on `main` still pending |
+| 2026-10-21 | Branch protection applied on `main` via `gh api`: requires the `test` check, blocks direct pushes. Issue closed |

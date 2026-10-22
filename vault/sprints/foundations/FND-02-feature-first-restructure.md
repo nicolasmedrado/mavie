@@ -3,9 +3,9 @@ title: Feature-first restructure
 sprint: foundations
 feature: —
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-21
-finished_at:
+finished_at: 2026-10-21
 ---
 
 # FND-02 · Feature-first restructure
@@ -66,7 +66,7 @@ Pure move-and-rename. **No behaviour changes, no new abstractions.** Resist the 
    - **Result:** 8 tests, 4 files, all green
 3. `flutter run`, search for a film, open it
    - **Expected:** identical behaviour
-   - Manual check — left to the user to run; not performed by Claude
+   - **Result:** installed via `flutter install` on a physical Android device (debug APK), confirmed working by the user
 
 ## Dependencies
 
@@ -79,3 +79,4 @@ Pure move-and-rename. **No behaviour changes, no new abstractions.** Resist the 
 |------|---------|
 | 2026-10-21 | issue created |
 | 2026-10-21 | Files moved per the table, `main.dart` split into `app/bootstrap.dart` + `app/app.dart`, `movieClientProvider` renamed `tmdbDioProvider`, `providers.dart` dissolved into `movie_providers.dart`; `flutter analyze` clean, 8 tests green |
+| 2026-10-21 | Manual check confirmed on a physical Android device — PR merged, issue closed |
