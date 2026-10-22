@@ -3,9 +3,9 @@ title: Shared widget library
 sprint: foundations
 feature: —
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-21
-finished_at:
+finished_at: 2026-10-21
 ---
 
 # FND-07 · Shared widget library
@@ -50,7 +50,8 @@ Files: `lib/core/widgets/`
    - **Result:** automated — `movie_poster_test.dart` covers both the null-path and the broken-URL case (a scoped `HttpOverrides` forces the fetch to fail deterministically, no real network needed); both fall back to the same placeholder, same fixed size
 2. Airplane mode, open a previously-viewed film
    - **Expected:** the poster comes from cache
-   - **Not exercised** — needs a real device and a previously-cached poster; manual check, left to the user
+   - **Found not achievable yet, tested on a physical device:** opening *any* film's details requires a live `GET /movie/{id}` for the metadata (title, overview, score, genres, runtime) — nothing is cached locally except the poster bytes themselves. Offline, `AppErrorView` renders before the poster ever gets a chance to load from cache, for every film, not just uncached ones. `movies_cache` (BE-03) only backs server-side list rendering, not client offline reads — [[architecture/tmdb-integration]]. True offline viewing of a previously-seen film isn't possible until a local read path exists, which isn't scoped for any current issue. Logged in [[_meta/discrepancies]].
+   - What *was* confirmed on-device: `AppErrorView` with a working "Tentar novamente" button appears correctly in both the search screen (offline search) and the details screen (offline open) — exercising exactly the retry wiring this issue built
 3. Render `RatingDisplay(rating: 0)` next to `RatingDisplay(rating: null)`
    - **Expected:** visibly different — `0` shows a score, `null` shows "not rated"
    - **Result:** automated — `rating_display_test.dart`
@@ -68,3 +69,4 @@ Files: `lib/core/widgets/`
 |------|---------|
 | 2026-10-21 | issue created |
 | 2026-10-21 | Five widgets added (`core/widgets/`), both pages migrated. `flutter analyze` clean, 42 tests green. Also fixed Riverpod's ~38s auto-retry masking errors. Pending your manual airplane-mode/cache check |
+| 2026-10-21 | Manual check on a physical device: the airplane-mode poster-cache scenario isn't achievable yet (whole-screen dependency on live metadata, not a `MoviePoster` defect); `AppErrorView`'s retry confirmed working in both pages. Issue closed |
