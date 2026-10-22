@@ -7,7 +7,7 @@ last_review: 2026-10-21
 
 # Movie search
 
-Search TMDb by title and show the results as a list. The first feature built, and the only entry point into the app today — `main.dart` opens straight onto it.
+Search TMDb by title and show the results as a list. The first feature built, and the search tab of the shell — the app still launches straight into it.
 
 Documented retroactively from the shipped code on 2026-10-21. This describes **what the code actually does**, not what it should do.
 
@@ -22,7 +22,7 @@ Documented retroactively from the shipped code on 2026-10-21. This describes **w
 
 | Layer | File |
 |---|---|
-| Page | [movie_search_page.dart](../../../lib/features/movies/presentation/pages/movie_search_page.dart) — `ConsumerStatefulWidget`, a local `Timer` for the debounce, `Navigator.push(MaterialPageRoute(...))` on tap |
+| Page | [movie_search_page.dart](../../../lib/features/movies/presentation/pages/movie_search_page.dart) — `ConsumerStatefulWidget`, a local `Timer` for the debounce, `context.push(AppRoutes.movieDetails(id))` on tap |
 | Providers | [movie_providers.dart](../../../lib/features/movies/presentation/providers/movie_providers.dart) — `tmdbDioProvider` → `movieRemoteDataSourceProvider` → `movieRepositoryProvider` (typed as the domain interface), `movieSearchQueryProvider` (`NotifierProvider<MovieSearchQueryNotifier, String>`), `movieSearchResultsProvider` (`FutureProvider<List<MovieSummary>>` watching the query) |
 | Repository | [movie_repository.dart](../../../lib/features/movies/domain/repositories/movie_repository.dart) (interface) · [movie_repository_impl.dart](../../../lib/features/movies/data/repositories/movie_repository_impl.dart) (maps `MovieSummaryModel.toEntity()`) |
 | Data source | [movie_remote_data_source.dart](../../../lib/features/movies/data/datasources/movie_remote_data_source.dart) — `GET /search/movie?query=` |
@@ -48,7 +48,6 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 
 | Issue | Change |
 |---|---|
-| FND-10 | `Navigator.push` becomes `context.push('/movie/:id')`; the page becomes a shell tab |
 | MOV-04 | Pagination, skeletons, a real no-results state, recent searches |
 
 ## Maintenance
@@ -61,3 +60,4 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 | 2026-10-21 | FND-06: result tile's thumbnail size, radius and placeholder colour migrated onto `core/theme/` tokens |
 | 2026-10-21 | FND-07: result tile uses `MoviePoster`; errors render via `AppErrorView` with a working retry; loading uses `AppLoadingIndicator` |
 | 2026-10-21 | FND-08 + FND-09: every string moved to ARB; tests migrated to the shared `pumpApp`/`FakeMovieRepository`/`FakeHttpAdapter` harness |
+| 2026-10-21 | FND-10: `Navigator.push` replaced by `context.push(AppRoutes.movieDetails(id))`; the page is now the search tab of the shell, reached via `go_router` instead of being the app's `home` |

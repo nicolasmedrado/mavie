@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mavie/core/error/app_failure.dart';
+import 'package:mavie/core/router/app_routes.dart';
 import 'package:mavie/core/widgets/app_error_view.dart';
 import 'package:mavie/core/widgets/app_loading_indicator.dart';
 import 'package:mavie/core/widgets/movie_poster.dart';
-import 'package:mavie/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
 import 'package:mavie/l10n/generated/app_localizations.dart';
 
@@ -70,13 +71,7 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => MovieDetailsPage(movieId: movie.id),
-                    ),
-                  );
-                },
+                onTap: () => context.push(AppRoutes.movieDetails(movie.id)),
               );
             },
           );

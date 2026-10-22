@@ -85,19 +85,23 @@ Two paths, deliberately different — [[architecture/decisions/0009-result-for-c
 
 ## Navigation
 
-`go_router`, adopted in FND-10 before any auth work — [[architecture/decisions/0010-go-router-declarative-auth]]. Auth gating is a declarative `redirect` problem; retrofitting it onto imperative `Navigator.push` means scattering session checks across pages.
+`go_router`, adopted in FND-10 (`core/router/{app_routes,app_router,app_shell,go_router_refresh}.dart`) before any auth work — [[architecture/decisions/0010-go-router-declarative-auth]]. Auth gating is a declarative `redirect` problem; retrofitting it onto imperative `Navigator.push` means scattering session checks across pages. `app.dart` uses `MaterialApp.router`; the app launches straight into `/search` (the shell's search tab) — unchanged from before this issue, since there's no auth yet to gate on.
 
 ```
-/splash
-/sign-in  /sign-up  /forgot-password
+/splash                                   placeholder — reachable, but nothing redirects here yet
+/sign-in  /sign-up  /forgot-password       placeholder
 StatefulShellRoute.indexedStack
-  /home   /search   /library   /lists
-/movie/:id                 pushed above the shell
-/lists/new  /lists/:listId  /lists/:listId/members
-/profile  /settings
+  /home   /search   /library   /lists      /search is the real MovieSearchPage; the rest are placeholder
+/movie/:id                                 real MovieDetailsPage, pushed above the shell
+/lists/new  /lists/:listId  /lists/:listId/members   placeholder
+/profile  /settings                        placeholder
 ```
 
-**Do not `ref.watch` the auth state inside `routerProvider`** — that rebuilds the whole `GoRouter` on every auth event and wipes the navigation stack. Use `refreshListenable` with a `ChangeNotifier` bridged from the auth stream, and `ref.read` inside `redirect`.
+Every route that doesn't have a real screen yet renders `core/widgets/placeholder_page.dart` — per FND-02's own rule, feature folders (`features/{auth,home,library,lists,profile}`) are created when their issue actually lands, not pre-stubbed for a route table.
+
+**Do not `ref.watch` the auth state inside `routerProvider`** — that rebuilds the whole `GoRouter` on every auth event and wipes the navigation stack. Use `refreshListenable` with a `ChangeNotifier` bridged from the auth stream, and `ref.read` inside `redirect`. `go_router_refresh.dart`'s `GoRouterRefreshStream` is written and ready; AUTH-06 is what actually wires a `redirect` and a `refreshListenable` onto `appRouterProvider`, since there's no auth stream to bridge until then.
+
+Deep-link scheme registration (`AndroidManifest.xml` intent-filter, iOS `Info.plist` URL type) is **not done** — deferred to AUTH-05, where the actual OAuth redirect URI decides what the scheme should be, rather than guessing one now and redoing it.
 
 While the session is still being restored from secure storage the router pins to `/splash`. Without that gate the sign-in screen flashes on every cold start.
 
@@ -146,3 +150,4 @@ The recommendation ranking (HOME-02) is written as a **pure function** over seed
 | 2026-10-21 | FND-06 landed: `core/theme/` tokens, `AppTheme.light`/`dark`, both pages migrated off hardcoded values |
 | 2026-10-21 | FND-07 landed: `core/widgets/` (`MoviePoster`, `RatingDisplay`, `AppErrorView`, `AppEmptyView`, `AppLoadingIndicator`); found and fixed Riverpod's default ~38s auto-retry masking errors |
 | 2026-10-21 | FND-08 + FND-09 landed: l10n (`localeProvider`, every string extracted) and `test/support/` (`pumpApp`, generalized fakes, real fixtures). Testing section's stale pre-FND-02 paths also corrected in passing |
+| 2026-10-21 | FND-10 landed: `go_router` adoption, `MaterialApp.router`, four-tab shell with placeholder routes. `pump_app.dart`'s `pumpApp` gained an optional `routes` param for tests that need real navigation |

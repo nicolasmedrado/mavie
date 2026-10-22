@@ -13,5 +13,10 @@
   "errorUnknown": "Algo deu errado. Tente novamente.",
   "retryButton": "Tentar novamente",
   "libraryStatusWantToWatch": "Quero assistir",
-  "libraryStatusWatched": "Assistido"
+  "libraryStatusWatched": "Assistido",
+  "navHome": "Início",
+  "navSearch": "Buscar",
+  "navLibrary": "Biblioteca",
+  "navLists": "Listas",
+  "comingSoon": "Em breve"
 }
