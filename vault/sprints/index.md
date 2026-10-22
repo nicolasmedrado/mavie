@@ -38,7 +38,7 @@ Only the **FND** issues have their own files so far. The rest are specified here
 | [[sprints/foundations/FND-07-shared-widgets\|FND-07]] | `MoviePoster`, `RatingDisplay`, `AppErrorView`, `AppEmptyView`, `AppLoadingIndicator` | done |
 | [[sprints/foundations/FND-08-l10n-setup\|FND-08]] | `l10n.yaml`, `app_en.arb`, `app_pt.arb`; extract every hardcoded string | done |
 | [[sprints/foundations/FND-09-test-infrastructure\|FND-09]] | `test/support/`: `pumpApp`, shared fakes, JSON fixtures; migrate the broken assertions | done |
-| [[sprints/foundations/FND-10-go-router-adoption\|FND-10]] | Route table, `StatefulShellRoute`, migrate off `Navigator.push`, refresh bridge | in_progress — automated checks green, pending your manual back/hardware-back check |
+| [[sprints/foundations/FND-10-go-router-adoption\|FND-10]] | Route table, `StatefulShellRoute`, migrate off `Navigator.push`, refresh bridge | done |
 | [[sprints/foundations/FND-11-lint-rules\|FND-11]] | Tighten `analysis_options.yaml` beyond the `flutter_lints` defaults | backlog |
 
 ## BE — Backend (Supabase)

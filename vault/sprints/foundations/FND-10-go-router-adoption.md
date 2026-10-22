@@ -3,9 +3,9 @@ title: go_router adoption
 sprint: foundations
 feature: —
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-21
-finished_at:
+finished_at: 2026-10-21
 ---
 
 # FND-10 · go_router adoption
@@ -64,7 +64,7 @@ Screens that do not exist yet get placeholder routes, so the shell is navigable 
    - **Not done.** Deferred to AUTH-05: the scheme should be decided by the actual Google sign-in redirect URI, not guessed now and redone later. Logged in [[_meta/discrepancies]]
 4. Android hardware back from a pushed details screen
    - **Expected:** pops one level, does not exit the app
-   - Manual check — left to the user to run; not performed by Claude
+   - **Result:** confirmed on a physical Android device — back from details returns to search with the query intact; switching tabs and back to search also preserved the typed query
 
 ## Dependencies
 
@@ -77,3 +77,4 @@ Screens that do not exist yet get placeholder routes, so the shell is navigable 
 |------|---------|
 | 2026-10-21 | issue created |
 | 2026-10-21 | `core/router/{app_routes,app_router,app_shell,go_router_refresh}.dart` added, `MaterialApp.router` wired, both real pages (search, details) and 9 placeholder routes in the table. `flutter analyze --fatal-infos` clean, 44 tests green. Deep-link scheme deliberately deferred to AUTH-05. Pending your manual back/hardware-back check |
+| 2026-10-21 | Manual check confirmed on a physical device — back navigation and tab-switch state preservation both correct. Issue closed |

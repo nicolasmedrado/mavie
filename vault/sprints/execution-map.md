@@ -14,7 +14,7 @@ last_review: 2026-10-21
 - When an issue finishes, tick it here, update its row in [[sprints/index]], and recalculate the phase and overall counters by hand.
 - `Overall = done / 66`.
 
-**Overall: 20% (13/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 82% (9/11)**
+**Overall: 21% (14/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 91% (10/11)**
 
 ---
 
@@ -29,7 +29,7 @@ Independent of everything. Done first so decisions are written as they are made,
 - [ ] (`DOC-01`) README rewrite — *better once the app looks like the product*
 - [ ] (`DOC-06`) TMDb attribution screen — *needs a Settings/About screen to live in*
 
-## Phase 1 — Foundations · 82% (9/11)
+## Phase 1 — Foundations · 91% (10/11)
 
 Everything here is cheap now and expensive later. **Do not start product features before this phase closes.**
 
@@ -39,7 +39,7 @@ Everything here is cheap now and expensive later. **Do not start product feature
 - [x] **E05** (`FND-04`) Entity split and serialization ∥ (`FND-05`) `Result` and `AppFailure` — *independent of each other, both block UI work*
 - [x] **E06** (`FND-06`) Design system → (`FND-07`) Shared widgets — *sequential: the widgets consume the tokens*
 - [x] **E07** (`FND-08` + `FND-09`) **l10n and test infrastructure, together** — l10n breaks three existing tests and the harness is the fix. Splitting them means migrating the tests twice
-- [ ] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06** — *automated checks green, pending manual back/hardware-back check*
+- [x] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06**
 - [ ] (`FND-11`) Lint rules — *any time after E03*
 
 ## Phase 2 — Backend baseline and accounts · 0% (0/11)
@@ -131,3 +131,4 @@ When something blocks, pull from here instead of idling:
 | 2026-10-21 | FND-09 done (test infrastructure, no manual step); E07 stays unticked pending FND-08's manual device-language check |
 | 2026-10-21 | FND-08's manual device-language check confirmed; E07 ticked — Phase 1 at 9/11, only FND-10 (go_router) and FND-11 (lint rules) left |
 | 2026-10-21 | FND-10 router landed, automated checks green; E08 left unticked pending the manual back/hardware-back check |
+| 2026-10-21 | FND-10 manual check confirmed; E08 ticked — Phase 1 at 10/11, only FND-11 (lint rules) left to close the whole phase |
