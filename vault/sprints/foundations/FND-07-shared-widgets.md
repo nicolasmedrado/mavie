@@ -3,8 +3,8 @@ title: Shared widget library
 sprint: foundations
 feature: —
 milestone: mvp
-status: backlog
-started_at:
+status: in_progress
+started_at: 2026-10-21
 finished_at:
 ---
 
@@ -36,21 +36,26 @@ Files: `lib/core/widgets/`
 
 ## Checklist
 
-- [ ] The five widgets, built on FND-06 tokens
-- [ ] Both existing pages migrated to `MoviePoster` and `RatingDisplay`
-- [ ] Both pages' error branches migrated to `AppErrorView`
-- [ ] `cached_network_image` replaces `Image.network` everywhere
-- [ ] Widget tests: null path, broken URL, `rating: 0` versus `rating: null`
-- [ ] Tick the poster-duplication and `errorBuilder` rows in [[_meta/discrepancies]]
+- [x] The five widgets, built on FND-06 tokens
+- [x] Both existing pages migrated to `MoviePoster` and `RatingDisplay` (search has no rating UI to migrate — `RatingDisplay` applies to the details screen only)
+- [x] Both pages' error branches migrated to `AppErrorView`
+- [x] `cached_network_image` replaces `Image.network` everywhere
+- [x] Widget tests: null path, broken URL, `rating: 0` versus `rating: null`
+- [x] Tick the poster-duplication and `errorBuilder` rows in [[_meta/discrepancies]]
 
 ## Test scenario
 
 1. Open a film with no poster
    - **Expected:** a styled placeholder, not a broken-image icon and not a layout jump
+   - **Result:** automated — `movie_poster_test.dart` covers both the null-path and the broken-URL case (a scoped `HttpOverrides` forces the fetch to fail deterministically, no real network needed); both fall back to the same placeholder, same fixed size
 2. Airplane mode, open a previously-viewed film
    - **Expected:** the poster comes from cache
+   - **Not exercised** — needs a real device and a previously-cached poster; manual check, left to the user
 3. Render `RatingDisplay(rating: 0)` next to `RatingDisplay(rating: null)`
    - **Expected:** visibly different — `0` shows a score, `null` shows "not rated"
+   - **Result:** automated — `rating_display_test.dart`
+
+**Also found in passing:** Riverpod's default automatic retry (`ProviderContainer.defaultRetry`, up to 10 attempts with exponential backoff, ~38s total) was masking every failure behind `AsyncLoading` — the `error` branch (and therefore `AppErrorView`) never rendered until all 10 retries exhausted. Disabled app-wide in `main.dart`. See [[architecture/overview]] and [[_meta/discrepancies]].
 
 ## Dependencies
 
@@ -62,3 +67,4 @@ Files: `lib/core/widgets/`
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | Five widgets added (`core/widgets/`), both pages migrated. `flutter analyze` clean, 42 tests green. Also fixed Riverpod's ~38s auto-retry masking errors. Pending your manual airplane-mode/cache check |

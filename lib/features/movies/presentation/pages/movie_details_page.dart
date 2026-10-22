@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mavie/core/network/tmdb_dio.dart';
-import 'package:mavie/core/theme/app_colors.dart';
+import 'package:mavie/core/error/app_failure.dart';
 import 'package:mavie/core/theme/app_spacing.dart';
+import 'package:mavie/core/widgets/app_error_view.dart';
+import 'package:mavie/core/widgets/app_loading_indicator.dart';
+import 'package:mavie/core/widgets/movie_poster.dart';
+import 'package:mavie/core/widgets/rating_display.dart';
 import 'package:mavie/features/movies/presentation/providers/movie_providers.dart';
 
 class MovieDetailsPage extends ConsumerWidget {
@@ -33,13 +36,10 @@ class MovieDetailsPage extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (movie.posterPath != null)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                    child: Image.network(
-                      '$tmdbImageBaseUrl${movie.posterPath}',
-                    ),
-                  ),
+                MoviePoster(
+                  posterPath: movie.posterPath,
+                  size: MoviePosterSize.hero,
+                ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   movie.title,
@@ -55,21 +55,20 @@ class MovieDetailsPage extends ConsumerWidget {
                   ),
                 ],
                 const SizedBox(height: AppSpacing.sm),
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: AppColors.rating, size: 20),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(movie.voteAverage.toStringAsFixed(1)),
-                  ],
-                ),
+                RatingDisplay(rating: movie.voteAverage),
                 const SizedBox(height: AppSpacing.md),
                 Text(movie.overview),
               ],
             ),
           );
         },
-        error: (error, stackTrace) => Center(child: Text('Erro: $error')),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => AppErrorView(
+          failure: error is AppFailure
+              ? error
+              : UnknownFailure(error, stackTrace),
+          onRetry: () => ref.invalidate(movieDetailsProvider(movieId)),
+        ),
+        loading: () => const AppLoadingIndicator(),
       ),
     );
   }

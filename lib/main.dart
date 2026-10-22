@@ -5,5 +5,11 @@ import 'package:mavie/app/bootstrap.dart';
 
 Future<void> main() async {
   await bootstrap();
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(retry: _noRetry, child: const MyApp()));
 }
+
+// Riverpod retries a failed provider up to 10 times with exponential
+// backoff by default (capped at 6.4s, ~38s total), rendering AsyncLoading
+// the whole time. AppErrorView (FND-07) already gives the user an explicit,
+// immediate retry action, so the automatic one is disabled app-wide.
+Duration? _noRetry(int retryCount, Object error) => null;

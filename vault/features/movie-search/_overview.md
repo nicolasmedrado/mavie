@@ -27,6 +27,7 @@ Documented retroactively from the shipped code on 2026-10-21. This describes **w
 | Repository | [movie_repository.dart](../../../lib/features/movies/domain/repositories/movie_repository.dart) (interface) · [movie_repository_impl.dart](../../../lib/features/movies/data/repositories/movie_repository_impl.dart) (maps `MovieSummaryModel.toEntity()`) |
 | Data source | [movie_remote_data_source.dart](../../../lib/features/movies/data/datasources/movie_remote_data_source.dart) — `GET /search/movie?query=` |
 | Entity / model | [movie_summary.dart](../../../lib/features/movies/domain/entities/movie_summary.dart) · [movie_summary_model.dart](../../../lib/features/movies/data/models/movie_summary_model.dart) |
+| Widgets | `MoviePoster(size: MoviePosterSize.thumbnail)`, `AppErrorView`, `AppLoadingIndicator` — [[architecture/overview]] |
 
 Endpoint details: [[architecture/tmdb-integration]].
 
@@ -43,15 +44,11 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 - **Empty query and "no results" are the same state** — a real search that finds nothing shows the *"type something to search"* placeholder. MOV-04.
 - **No pagination.** `page` is never sent, `total_pages` is ignored — only the first 20 results are reachable. MOV-04.
 - UI strings hardcoded in Portuguese; three test assertions depend on them. FND-08 + FND-09.
-- Poster logic duplicated with the details page. FND-07.
-- `Image.network` with no `errorBuilder` or `loadingBuilder`, no caching. FND-01 + FND-07.
-- No `AppErrorView` — errors render as `Text('Erro: $error')`. FND-05.
 
 ## Planned changes
 
 | Issue | Change |
 |---|---|
-| FND-07 | Result tile uses the shared `MoviePoster` |
 | FND-10 | `Navigator.push` becomes `context.push('/movie/:id')`; the page becomes a shell tab |
 | MOV-04 | Pagination, skeletons, a real no-results state, recent searches |
 
@@ -63,3 +60,4 @@ All logged in [[_meta/discrepancies]] with the issue that resolves each:
 | 2026-10-21 | FND-02: moved to `features/movies/`; DI table folded into the providers row since `providers.dart` was dissolved and `movieClientProvider` renamed `tmdbDioProvider` |
 | 2026-10-21 | FND-04: search results are now `MovieSummary`, serialized by `MovieSummaryModel` (`fromJson` + `toJson`) |
 | 2026-10-21 | FND-06: result tile's thumbnail size, radius and placeholder colour migrated onto `core/theme/` tokens |
+| 2026-10-21 | FND-07: result tile uses `MoviePoster`; errors render via `AppErrorView` with a working retry; loading uses `AppLoadingIndicator` |

@@ -25,6 +25,9 @@ Divergences between documentation and reality (code, libraries, external APIs), 
 
 | 2026-10-21 | `pubspec.yaml` | `hive` / `hive_flutter` removed per FND-01 | Resolved — both removed, `flutter pub deps` confirms no trace, `flutter analyze`/`flutter test` clean | Row above (`hive`/`hive_flutter` never imported) closed |
 | 2026-10-21 | `movie_summary_model.dart` / `movie_details_model.dart` | Model serializable both ways, per FND-04 | Resolved — both models have `toJson`, snake_case `movies_cache`-shaped, covered by round-trip tests | Row above (`movie_model.dart` no `toJson`) closed |
+| 2026-10-21 | `MoviePoster` (FND-07) | One poster widget | Resolved — duplicated poster/placeholder logic in both pages replaced by `core/widgets/movie_poster.dart`, built on `cached_network_image` | Row above (poster logic duplicated) closed |
+| 2026-10-21 | `MoviePoster` (FND-07) | Network images degrade gracefully | Resolved — `cached_network_image` with a styled placeholder for null path, loading and error states, covered by `movie_poster_test.dart` | Row above (`Image.network` with no `errorBuilder`) closed |
+| 2026-10-21 | `lib/main.dart` × Riverpod 3 defaults | A broken network request surfaces `AppErrorView` promptly | Found in passing while testing FND-07: Riverpod's `ProviderContainer.defaultRetry` retries a failed provider up to 10 times with exponential backoff (capped 6.4s, ~38s total) *before* `AsyncValue` ever reaches the `error` branch — `.when()` treats a retrying failure as `AsyncLoading`, so the spinner would spin for up to ~38s before any error UI appeared | Disabled app-wide: `ProviderScope(retry: (_, __) => null, ...)` in `main.dart`, since `AppErrorView`'s explicit retry button (FND-07) is the intended recovery path, not a silent background one |
 
 ## Maintenance
 

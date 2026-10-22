@@ -13,7 +13,7 @@ Documented retroactively from the shipped code on 2026-10-21. This describes **w
 
 ## Behaviour
 
-Scrollable page showing, in order: poster, title, a metadata line (year · runtime · genres, each part omitted when TMDb has none), TMDb score with a star icon, synopsis. Loading is a centred `CircularProgressIndicator`; failure is `Text('Erro: $error')`.
+Scrollable page showing, in order: poster, title, a metadata line (year · runtime · genres, each part omitted when TMDb has none), TMDb score, synopsis. Loading is `AppLoadingIndicator`; failure is `AppErrorView` with a working retry button that re-fetches via `ref.invalidate`.
 
 Takes a `movieId` and fetches the film itself — it does not receive the `MovieSummary` from the search results. That is intentional: `GET /movie/{id}` returns more than `/search/movie` does, so the details screen is the authoritative read.
 
@@ -26,20 +26,19 @@ Takes a `movieId` and fetches the film itself — it does not receive the `Movie
 | Repository | [movie_repository_impl.dart](../../../lib/features/movies/data/repositories/movie_repository_impl.dart) (maps `MovieDetailsModel.toEntity()`) |
 | Data source | [movie_remote_data_source.dart](../../../lib/features/movies/data/datasources/movie_remote_data_source.dart) — `GET /movie/{id}` |
 | Entity / model | [movie_details.dart](../../../lib/features/movies/domain/entities/movie_details.dart) — wraps a `MovieSummary` by composition, plus `backdropPath`, `runtimeMinutes`, `genres` (`List<String>`), `originalTitle` · [movie_details_model.dart](../../../lib/features/movies/data/models/movie_details_model.dart) (`fromJson` + `toJson`, snake_case `movies_cache`-shaped) |
+| Widgets | `MoviePoster(size: MoviePosterSize.hero)`, `RatingDisplay`, `AppErrorView`, `AppLoadingIndicator` — [[architecture/overview]] |
 
 Shares its repository and DI graph with [[features/movie-search/_overview]]; `MovieDetails` composes `MovieSummary` rather than extending it, so a `MovieSummary` is usable as a value everywhere without a downcast — [[architecture/decisions/0001-feature-first-modules]] territory, decided in FND-04.
 
 ## Tests
 
-[movie_details_page_test.dart](../../../test/features/movies/presentation/pages/movie_details_page_test.dart) — covers the metadata line rendering (year, runtime, genres) and that it is omitted entirely when TMDb has none of them, no stray `"null"` text.
+[movie_details_page_test.dart](../../../test/features/movies/presentation/pages/movie_details_page_test.dart) — covers the metadata line rendering (year, runtime, genres), that it is omitted entirely when TMDb has none of them with no stray `"null"` text, and that `AppErrorView`'s retry button re-fetches (Riverpod's automatic retry disabled via `ProviderScope(retry: (_, __) => null, ...)` so the test observes the explicit retry in isolation — see [[architecture/overview]]).
 
 [movie_details_model_test.dart](../../../test/features/movies/data/models/movie_details_model_test.dart) — `fromJson` against a real TMDb fixture and a minimal one with no runtime/genres, plus the `toJson` cache-shape mapping.
 
 ## Known gaps
 
-- Poster logic duplicated with the search page. FND-07.
-- Portuguese strings (`'Detalhes do filme'`, `'Erro: $error'`). FND-08.
-- No `errorBuilder` on `Image.network`. FND-07.
+- Portuguese strings (`'Detalhes do filme'`, and `AppErrorView`'s messages). FND-08.
 
 ## Planned changes
 
@@ -63,3 +62,4 @@ This screen is where most of the MVP converges.
 | 2026-10-21 | FND-02: moved to `features/movies/` |
 | 2026-10-21 | FND-04: entity split into `MovieSummary`/`MovieDetails`; details page now renders year, runtime and genres; `toJson` added |
 | 2026-10-21 | FND-06: migrated off hardcoded `Colors.amber`/`SizedBox`/`BorderRadius.circular` onto `core/theme/` tokens |
+| 2026-10-21 | FND-07: poster via `MoviePoster`, rating via `RatingDisplay`, errors via `AppErrorView` with a working retry, loading via `AppLoadingIndicator` |

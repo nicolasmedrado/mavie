@@ -83,3 +83,4 @@ Each variant carries an l10n key, so messages are translatable by construction (
 |------|---------|
 | 2026-10-21 | issue created |
 | 2026-10-21 | `AppFailure`/`Result`/`failure_mapper` added; `MovieRepositoryImpl` rethrows mapped failures. `flutter analyze` clean, 35 tests green. Test scenario 2 (retry after reconnect) deferred to FND-07, no retry action exists yet |
+| 2026-10-21 | FND-07 added the retry action (`AppErrorView`) scenario 2 was waiting on. In passing, found that Riverpod's own automatic retry (up to 10 attempts, ~38s) was masking the error behind `AsyncLoading` — disabled app-wide so the explicit retry is the one path that matters. See [[architecture/overview]] |
