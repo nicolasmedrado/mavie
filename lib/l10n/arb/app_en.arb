@@ -60,5 +60,25 @@
   "libraryStatusWatched": "Watched",
   "@libraryStatusWatched": {
     "description": "System list name for MovieStatus.watched (LIB-01). Never stored in the database - client-side only, not wired to any screen yet"
+  },
+  "navHome": "Home",
+  "@navHome": {
+    "description": "Bottom navigation bar label and placeholder title for the home tab (HOME-01)"
+  },
+  "navSearch": "Search",
+  "@navSearch": {
+    "description": "Bottom navigation bar label for the search tab"
+  },
+  "navLibrary": "Library",
+  "@navLibrary": {
+    "description": "Bottom navigation bar label and placeholder title for the library tab (LIB-05)"
+  },
+  "navLists": "Lists",
+  "@navLists": {
+    "description": "Bottom navigation bar label and placeholder title for the lists tab (LST-02)"
+  },
+  "comingSoon": "Coming soon",
+  "@comingSoon": {
+    "description": "Body text for every route that is wired but not built yet (auth screens, profile, settings, list sub-routes) - FND-10"
   }
 }

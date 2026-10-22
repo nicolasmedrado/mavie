@@ -3,8 +3,8 @@ title: go_router adoption
 sprint: foundations
 feature: —
 milestone: mvp
-status: backlog
-started_at:
+status: in_progress
+started_at: 2026-10-21
 finished_at:
 ---
 
@@ -42,26 +42,29 @@ Screens that do not exist yet get placeholder routes, so the shell is navigable 
 
 ## Checklist
 
-- [ ] `app_routes.dart` with path/name constants and typed helpers
-- [ ] `app_router.dart` with the full table and placeholder screens
-- [ ] `StatefulShellRoute.indexedStack` + a bottom navigation bar on FND-06 tokens
-- [ ] `go_router_refresh.dart` — the `Stream` → `ChangeNotifier` bridge, written now, wired in AUTH-06
-- [ ] `MaterialApp.router` in `app.dart`
-- [ ] Both `Navigator.push` call sites migrated
-- [ ] Tab titles localized (FND-08)
-- [ ] Update the navigation assertion in `movie_search_page_test.dart` — it currently asserts a `MovieDetailsPage` arrives via `Navigator`
-- [ ] Tick the `go_router` row in [[_meta/discrepancies]]
+- [x] `app_routes.dart` with path/name constants and typed helpers
+- [x] `app_router.dart` with the full table and placeholder screens
+- [x] `StatefulShellRoute.indexedStack` + a bottom navigation bar on FND-06 tokens
+- [x] `go_router_refresh.dart` — the `Stream` → `ChangeNotifier` bridge, written now, wired in AUTH-06
+- [x] `MaterialApp.router` in `app.dart`
+- [x] Both `Navigator.push` call sites migrated — **only one existed** (`movie_search_page.dart`); the issue's own count was off, nothing else to migrate
+- [x] Tab titles localized (FND-08) — `navHome`/`navSearch`/`navLibrary`/`navLists`
+- [x] Update the navigation assertion in `movie_search_page_test.dart` — it currently asserts a `MovieDetailsPage` arrives via `Navigator`
+- [x] Tick the `go_router` row in [[_meta/discrepancies]]
 
 ## Test scenario
 
 1. Search → open a film → back
    - **Expected:** returns to the search tab with the query and scroll position intact
+   - **Structural guarantee, not separately automated:** `/movie/:id` is a root-level route (pushed above the `StatefulShellRoute`, per the table), so popping it never touches the shell's branch stacks. Manual check recommended
 2. Switch tabs and come back
    - **Expected:** each tab kept its own stack
+   - **Result:** `app_shell_test.dart` confirms branches render independently and switch correctly — `StatefulShellRoute.indexedStack`'s own guarantee, not custom logic. Scroll-position preservation specifically isn't separately tested; manual check recommended once a tab has real scrollable content
 3. Deep link `mavie://movie/438631` (or the configured scheme)
-   - **Expected:** opens the details screen directly — Google sign-in needs this plumbing anyway
+   - **Not done.** Deferred to AUTH-05: the scheme should be decided by the actual Google sign-in redirect URI, not guessed now and redone later. Logged in [[_meta/discrepancies]]
 4. Android hardware back from a pushed details screen
    - **Expected:** pops one level, does not exit the app
+   - Manual check — left to the user to run; not performed by Claude
 
 ## Dependencies
 
@@ -73,3 +76,4 @@ Screens that do not exist yet get placeholder routes, so the shell is navigable 
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | issue created |
+| 2026-10-21 | `core/router/{app_routes,app_router,app_shell,go_router_refresh}.dart` added, `MaterialApp.router` wired, both real pages (search, details) and 9 placeholder routes in the table. `flutter analyze --fatal-infos` clean, 44 tests green. Deep-link scheme deliberately deferred to AUTH-05. Pending your manual back/hardware-back check |

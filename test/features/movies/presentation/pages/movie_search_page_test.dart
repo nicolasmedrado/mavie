@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mavie/core/error/app_failure.dart';
+import 'package:mavie/core/router/app_routes.dart';
 import 'package:mavie/features/movies/domain/entities/movie_summary.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:mavie/features/movies/presentation/pages/movie_search_page.dart';
@@ -89,6 +91,13 @@ void main() {
       tester,
       const MovieSearchPage(),
       overrides: [movieRepositoryProvider.overrideWithValue(repository)],
+      routes: [
+        GoRoute(
+          path: AppRoutes.movieDetailsPattern,
+          builder: (context, state) =>
+              MovieDetailsPage(movieId: int.parse(state.pathParameters['id']!)),
+        ),
+      ],
     );
 
     await tester.enterText(find.byType(TextField), 'matrix');

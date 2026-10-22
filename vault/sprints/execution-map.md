@@ -39,7 +39,7 @@ Everything here is cheap now and expensive later. **Do not start product feature
 - [x] **E05** (`FND-04`) Entity split and serialization ∥ (`FND-05`) `Result` and `AppFailure` — *independent of each other, both block UI work*
 - [x] **E06** (`FND-06`) Design system → (`FND-07`) Shared widgets — *sequential: the widgets consume the tokens*
 - [x] **E07** (`FND-08` + `FND-09`) **l10n and test infrastructure, together** — l10n breaks three existing tests and the harness is the fix. Splitting them means migrating the tests twice
-- [ ] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06**
+- [ ] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06** — *automated checks green, pending manual back/hardware-back check*
 - [ ] (`FND-11`) Lint rules — *any time after E03*
 
 ## Phase 2 — Backend baseline and accounts · 0% (0/11)
@@ -130,3 +130,4 @@ When something blocks, pull from here instead of idling:
 | 2026-10-21 | Correction: Overall/Phase counters had stalled at 9/66 · 5/11 through FND-06 and FND-07 individually finishing, only updating when their shared E06 row got ticked. `Overall = done issues / 66`, not done execution-map rows — recounted to 12/66 · 8/11 (adds FND-06, FND-07, FND-09, all already individually done) |
 | 2026-10-21 | FND-09 done (test infrastructure, no manual step); E07 stays unticked pending FND-08's manual device-language check |
 | 2026-10-21 | FND-08's manual device-language check confirmed; E07 ticked — Phase 1 at 9/11, only FND-10 (go_router) and FND-11 (lint rules) left |
+| 2026-10-21 | FND-10 router landed, automated checks green; E08 left unticked pending the manual back/hardware-back check |
