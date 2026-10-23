@@ -49,6 +49,16 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
           ),
           onChanged: _onQueryChanged,
         ),
+        // Temporary entry point to /settings (AUTH-06) — the only tab with
+        // a real app bar today. Moves to a permanent home once one exists
+        // (likely Home's app bar, HOME-01).
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: l10n.settingsTooltip,
+            onPressed: () => context.push(AppRoutes.settings),
+          ),
+        ],
       ),
       body: resultsAsync.when(
         data: (movies) {
