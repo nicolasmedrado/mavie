@@ -1,6 +1,6 @@
 ---
 title: Security model
-status: planned
+status: in_progress
 last_review: 2026-10-21
 ---
 
@@ -10,7 +10,7 @@ How Row Level Security is arranged, and how one member of a shared list reads an
 
 This is the hardest design problem in the app. Read it before writing any policy.
 
-> Status: **specified, not yet implemented.** Issues BE-02 … BE-12.
+> Status: **`profiles` and `movies_cache` RLS implemented (BE-02/03).** The cross-member read gateway (`get_list_items`, BE-08) and the rest of the lists schema's policies are still specified, not yet implemented — issues BE-05 … BE-12.
 
 ## The question
 
@@ -156,3 +156,4 @@ This is also a genuinely good artifact to have in a portfolio repository.
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Security model designed; definer-RPC gateway chosen over cross-user RLS policies |
+| 2026-10-22 | `profiles`/`movies_cache` RLS and grants implemented and verified (BE-02/03). Confirmed in practice: `auto_expose_new_tables = false` means RLS policies alone are not enough — an explicit `grant` is also required per table, or every query fails with `permission denied` regardless of policy correctness |

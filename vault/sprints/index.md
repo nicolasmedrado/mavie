@@ -10,7 +10,7 @@ Sprints group issues **by functionality, not by date**. The numbering inside a s
 
 Only the **FND** issues have their own files so far. The rest are specified here as one-liners and get a file from [[sprints/_issue-template]] when their turn comes — see [[_meta/documentation-process]].
 
-**66 issues · 9 sprints**
+**70 issues · 9 sprints**
 
 ---
 
@@ -45,9 +45,9 @@ Only the **FND** issues have their own files so far. The rest are specified here
 
 | Issue | Scope | Status |
 |---|---|---|
-| BE-01 | Supabase project, CLI, `supabase/migrations/`, extensions, env keys | backlog |
-| BE-02 | `profiles` table, `handle_new_user` trigger, `updated_at` trigger, RLS | backlog |
-| BE-03 | `movies_cache` table, trigram index, read-only RLS | backlog |
+| [[sprints/backend/BE-01-supabase-project\|BE-01]] | Supabase project, CLI, `supabase/migrations/`, extensions, env keys | done |
+| [[sprints/backend/BE-02-profiles-table\|BE-02]] | `profiles` table, `handle_new_user` trigger, `updated_at` trigger, RLS | done |
+| [[sprints/backend/BE-03-movies-cache\|BE-03]] | `movies_cache` table, trigram index, read-only RLS | done |
 | BE-04 | `user_movies` table, the four CHECK constraints, three indexes, own-rows-only RLS | backlog |
 | BE-05 | `lists` / `list_members` / `list_items`, owner-as-member trigger, single-owner index | backlog |
 | BE-06 | `is_list_member`, `is_list_owner`, `shares_list_with` + the lists policies | backlog |
@@ -134,3 +134,4 @@ Only the **FND** issues have their own files so far. The rest are specified here
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Backlog created; DOC-02 … DOC-05 completed by the vault itself |
+| 2026-10-22 | Header corrected from "66 issues" to "70" — the per-sprint tables always summed to 70, see [[_meta/discrepancies]]. BE-01, BE-02, BE-03 done, now with their own issue files |

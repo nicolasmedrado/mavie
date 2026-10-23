@@ -1,6 +1,6 @@
 ---
 title: Data model
-status: planned
+status: in_progress
 last_review: 2026-10-21
 ---
 
@@ -8,7 +8,7 @@ last_review: 2026-10-21
 
 Postgres on Supabase. Migrations live in `supabase/migrations/`, applied through the Supabase CLI.
 
-> Status: **specified, not yet created.** Issues BE-01 through BE-05. Treat this document as the spec the migrations must match, and update it in the same session the migrations change.
+> Status: **`profiles` and `movies_cache` created (BE-01/02/03).** `user_movies`, `lists`, `list_members`, `list_items` still specified, not yet created — issues BE-04 through BE-06. Treat this document as the spec the migrations must match, and update it in the same session the migrations change.
 
 Extensions: `pgcrypto` (`gen_random_uuid`), `citext` (usernames), `pg_trgm` (title search).
 
@@ -214,3 +214,4 @@ Full signatures and reasoning in [[architecture/security-model]].
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Schema specified for the MVP; no migrations written yet |
+| 2026-10-22 | `profiles` and `movies_cache` created and verified (BE-01/02/03) — migrations match this spec |

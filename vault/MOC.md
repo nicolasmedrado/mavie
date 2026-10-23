@@ -8,7 +8,7 @@ last_review: 2026-10-21
 
 > An app for **two people to track films together**: each with their own lists and their own scores, plus shared lists where both scores are visible. Also a portfolio piece — the goal is a real app two real users actually use.
 >
-> **Current phase:** MVP specified, foundations not yet started. Resume at [[handoffs/2026-10-vault-bootstrap]].
+> **Current phase:** Foundations closed, backend baseline underway. See [[sprints/execution-map]] for the current step.
 
 ## Start here
 
@@ -46,7 +46,7 @@ Specified, not built:
 
 ## Execution
 
-- [[sprints/index]] — 66 issues across 9 functional sprints
+- [[sprints/index]] — 70 issues across 9 functional sprints
 - [[sprints/execution-map]] — E01 → E22 with dependencies and progress
 - [[sprints/_issue-template]]
 

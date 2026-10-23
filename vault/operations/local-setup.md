@@ -10,7 +10,8 @@ last_review: 2026-10-21
 
 - Flutter SDK, Dart `^3.12.2`
 - A TMDb API key — free, from [themoviedb.org](https://www.themoviedb.org/settings/api)
-- Later, from BE-01: Docker and the Supabase CLI
+- Docker Desktop, running, for local Supabase
+- The Supabase CLI, via `npx` — see [Supabase local development](#supabase-local-development)
 
 ## Running the app
 
@@ -36,9 +37,9 @@ An earlier approach used a git-ignored Dart constants file (`lib/data/tmdb_api_k
 
 ### Supabase keys (from BE-01)
 
-`.env` gains `SUPABASE_URL` and `SUPABASE_ANON_KEY`. The anon key is **designed** to be public — the data is protected by [[architecture/security-model|RLS]], not by key secrecy.
+`.env` gains `SUPABASE_URL` and `SUPABASE_ANON_KEY`, pointing at the real hosted project. The anon key is **designed** to be public — the data is protected by [[architecture/security-model|RLS]], not by key secrecy. It is the new-style `sb_publishable_...` format, not the legacy JWT anon key.
 
-**The service role key must never be in the app, in `.env`, or in CI.** It bypasses RLS entirely.
+**The service role / secret key (`sb_secret_...`) must never be in the app, in `.env`, or in CI.** It bypasses RLS entirely.
 
 ## Tests
 
@@ -51,16 +52,33 @@ Tests never make real network calls — fakes all the way down ([[architecture/d
 
 ## Supabase local development
 
-> Arrives with BE-01. Expected shape:
->
-> ```bash
-> supabase start                  # local Postgres + Auth + Storage in Docker
-> supabase db reset               # replay migrations + seed
-> supabase migration new <name>
-> supabase db push                # apply to the hosted project
-> ```
->
-> Migrations in `supabase/migrations/`, seed in `supabase/seed.sql`, the RLS proof script in `supabase/tests/rls_test.sql`.
+No scoop/choco on this project's dev machines — the CLI is never installed globally, always invoked through `npx`:
+
+```bash
+npx -y supabase start                  # local Postgres + Auth + Storage in Docker — requires Docker Desktop running
+npx -y supabase db reset               # replay migrations + seed
+npx -y supabase migration new <name>
+npx -y supabase db push                # apply pending migrations to the hosted project
+npx -y supabase migration list         # compare local vs. remote migration timestamps
+npx -y supabase login                  # interactive OAuth — run this one directly in a real terminal,
+                                        # not through an automated/non-TTY tool; it fails with
+                                        # LoginMissingTokenError otherwise
+npx -y supabase link --project-ref <ref>
+```
+
+Migrations in `supabase/migrations/`, seed in `supabase/seed.sql`, the RLS proof script in `supabase/tests/rls_test.sql` (arrives with BE-12).
+
+To test RLS directly against the local Postgres without a real client, simulate a user inside a transaction and roll it back:
+
+```sql
+begin;
+set local role authenticated;
+set local request.jwt.claim.sub = '<uuid>';
+-- queries here run as that user, under RLS
+rollback;
+```
+
+**`auto_expose_new_tables = false`** in `config.toml` (both locally and on the hosted project): no table is reachable through the Data API from an RLS policy alone — every table also needs an explicit `grant` to `authenticated` (or whatever role), or every query fails with `permission denied` regardless of policy correctness. See [[architecture/security-model]].
 
 ## Gotchas
 
@@ -75,3 +93,4 @@ Tests never make real network calls — fakes all the way down ([[architecture/d
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Written; secrets section carried over from the retired `vault/context.md` |
+| 2026-10-22 | Supabase local development section replaced with the real, verified workflow from BE-01/02/03 — `npx` prefix (no scoop/choco on this machine), `auto_expose_new_tables` gotcha, RLS testing recipe |
