@@ -12,9 +12,9 @@ last_review: 2026-10-21
 
 - Each step has a code (`E01`, `E02`, …) and a checkbox.
 - When an issue finishes, tick it here, update its row in [[sprints/index]], and recalculate the phase and overall counters by hand.
-- `Overall = done / 66`.
+- `Overall = done / 70`.
 
-**Overall: 23% (15/66)** · **Phase 0: 67% (4/6)** · **Phase 1: 100% (11/11)**
+**Overall: 26% (18/70)** · **Phase 0: 67% (4/6)** · **Phase 1: 100% (11/11)** · **Phase 2: 33% (3/9)**
 
 ---
 
@@ -42,15 +42,15 @@ Everything here is cheap now and expensive later. **Do not start product feature
 - [x] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06**
 - [x] (`FND-11`) Lint rules — *any time after E03*
 
-## Phase 2 — Backend baseline and accounts · 0% (0/11)
+## Phase 2 — Backend baseline and accounts · 33% (3/9)
 
-- [ ] **E09** (`BE-01` → `BE-02` → `BE-03`) Supabase project, `profiles`, `movies_cache`
+- [x] **E09** (`BE-01` → `BE-02` → `BE-03`) Supabase project, `profiles`, `movies_cache`
 - [ ] **E10** (`AUTH-01` → `AUTH-02` → `AUTH-03`) Client, repository, auth state
 - [ ] **E11** (`AUTH-04`, `AUTH-06`, `AUTH-08`) Email/password screens, router gating, tests
 
 🎯 **Milestone 1 — you can sign in and the app knows who you are.**
 
-## Phase 3 — The core loop · 0% (0/12)
+## Phase 3 — The core loop · 0% (0/11)
 
 The point of the product. After this phase, mavie is useful to its two users even with nothing else built.
 
@@ -66,7 +66,7 @@ Deliberately *after* the core loop: Google configuration is slow, platform-speci
 
 - [ ] **E15** (`AUTH-05`) Google sign-in ∥ (`BE-11` → `AUTH-07`) Storage buckets, profile edit, avatar, **language selector**
 
-## Phase 5 — Shared lists · 0% (0/13)
+## Phase 5 — Shared lists · 0% (0/12)
 
 - [ ] **E16** (`BE-05` → `BE-06` → **`BE-12`**) Lists schema, definer predicates, **RLS proof script**
       — *BE-12 before any list UI. With two trusted users an RLS bug never surfaces on its own*
@@ -76,7 +76,7 @@ Deliberately *after* the core loop: Google configuration is slow, platform-speci
 
 🎯 **Milestone 3 — the headline feature: a shared list showing both scores.**
 
-## Phase 6 — Discovery · 0% (0/9)
+## Phase 6 — Discovery · 0% (0/10)
 
 - [ ] **E19** (`BE-10` → `HOME-01` → `HOME-02` → `HOME-03` → `HOME-06`) Seeds, feed, ranking, cold start, tests
       — *needs real ratings from E13; with no ratings there is nothing to seed from*
@@ -133,3 +133,5 @@ When something blocks, pull from here instead of idling:
 | 2026-10-21 | FND-10 router landed, automated checks green; E08 left unticked pending the manual back/hardware-back check |
 | 2026-10-21 | FND-10 manual check confirmed; E08 ticked — Phase 1 at 10/11, only FND-11 (lint rules) left to close the whole phase |
 | 2026-10-21 | FND-11 done, no manual step. **Phase 1 — Foundations closed at 11/11.** Phase 2 (Backend baseline and accounts) is next: E09 — BE-01 → BE-02 → BE-03 |
+| 2026-10-22 | Correction: this page's "66" total and several phase denominators were wrong since the vault-bootstrap session — the per-sprint tables in [[sprints/index]] always summed to 70, not 66 (see [[_meta/discrepancies]]). Fixed `Overall = done / 70`, and the four phase headers whose issue counts didn't match their own bullet lists (Phase 2: 11→9, Phase 3: 12→11, Phase 5: 13→12, Phase 6: 9→10). Phase 4 and Phase 7 were already correct |
+| 2026-10-22 | E09 ticked: BE-01 (Supabase project/CLI), BE-02 (`profiles` + trigger + RLS), BE-03 (`movies_cache` + RLS) all done, verified via direct SQL against local Docker Postgres and pushed to the hosted project. No manual step. **Phase 2 at 3/9.** Next: E10 — AUTH-01 → AUTH-02 → AUTH-03 |

@@ -1,0 +1,2 @@
+-- Local dev seed data. Empty for now — nothing to seed until there's a
+-- schema with rows worth pre-populating (profiles, movies_cache, ...).
