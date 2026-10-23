@@ -26,30 +26,38 @@ Future<void> _settle(ProviderContainer container) async {
 }
 
 void main() {
-  test('currentUserProvider derives the signed-in user from authState', () async {
-    final session = Session(accessToken: 'token', tokenType: 'bearer', user: _user);
-    final container = ProviderContainer(
-      overrides: [
-        authStateProvider.overrideWith(
-          (ref) => Stream.value(AuthState(AuthChangeEvent.signedIn, session)),
-        ),
-      ],
-    );
-    addTearDown(container.dispose);
+  test(
+    'currentUserProvider derives the signed-in user from authState',
+    () async {
+      final session = Session(
+        accessToken: 'token',
+        tokenType: 'bearer',
+        user: _user,
+      );
+      final container = ProviderContainer(
+        overrides: [
+          authStateProvider.overrideWith(
+            (ref) => Stream.value(AuthState(AuthChangeEvent.signedIn, session)),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
 
-    await _settle(container);
+      await _settle(container);
 
-    expect(
-      container.read(currentUserProvider),
-      const AppUser(id: 'u1', email: 'a@mavie.app'),
-    );
-  });
+      expect(
+        container.read(currentUserProvider),
+        const AppUser(id: 'u1', email: 'a@mavie.app'),
+      );
+    },
+  );
 
   test('currentUserProvider is null once signed out', () async {
     final container = ProviderContainer(
       overrides: [
         authStateProvider.overrideWith(
-          (ref) => Stream.value(const AuthState(AuthChangeEvent.signedOut, null)),
+          (ref) =>
+              Stream.value(const AuthState(AuthChangeEvent.signedOut, null)),
         ),
       ],
     );
