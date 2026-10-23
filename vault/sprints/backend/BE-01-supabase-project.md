@@ -62,3 +62,4 @@ No manual device/UI step — verified entirely through the CLI and direct SQL.
 | Date | Summary |
 |------|---------|
 | 2026-10-22 | issue created and closed together with BE-02/BE-03 (execution slot E09). Hosted project created, local Docker stack verified, CLI workflow established. No manual step |
+| 2026-10-23 | Resolved in AUTH-01: `supabase_flutter` 2.18.3 works with the new-style key via the `publishableKey` parameter (`anonKey` is deprecated in favor of it, same key value) — see [[sprints/auth/AUTH-01-supabase-client]] |

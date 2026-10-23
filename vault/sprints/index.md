@@ -62,9 +62,9 @@ Only the **FND** issues have their own files so far. The rest are specified here
 
 | Issue | Scope | Status |
 |---|---|---|
-| AUTH-01 | `Supabase.initialize` in `bootstrap()`, `supabaseClientProvider` | backlog |
-| AUTH-02 | `AppUser`, `AuthRepository`, Supabase implementation returning `Result` | backlog |
-| AUTH-03 | `authStateProvider` stream, `currentUserProvider` | backlog |
+| [[sprints/auth/AUTH-01-supabase-client\|AUTH-01]] | `Supabase.initialize` in `bootstrap()`, `supabaseClientProvider` | done |
+| [[sprints/auth/AUTH-02-auth-repository\|AUTH-02]] | `AppUser`, `AuthRepository`, Supabase implementation returning `Result` | done |
+| [[sprints/auth/AUTH-03-auth-state\|AUTH-03]] | `authStateProvider` stream, `currentUserProvider` | done |
 | AUTH-04 | Sign in, sign up, forgot password; inline validation | backlog |
 | AUTH-05 | Google sign-in: provider config, SHA-1s, iOS client ID, deep links | backlog |
 | AUTH-06 | Router gating, splash while the session restores, sign-out | backlog |
@@ -135,3 +135,4 @@ Only the **FND** issues have their own files so far. The rest are specified here
 |------|---------|
 | 2026-10-21 | Backlog created; DOC-02 … DOC-05 completed by the vault itself |
 | 2026-10-22 | Header corrected from "66 issues" to "70" — the per-sprint tables always summed to 70, see [[_meta/discrepancies]]. BE-01, BE-02, BE-03 done, now with their own issue files |
+| 2026-10-23 | AUTH-01, AUTH-02, AUTH-03 done, now with their own issue files |

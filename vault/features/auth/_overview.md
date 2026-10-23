@@ -1,15 +1,15 @@
 ---
 title: Authentication
-status: planned
+status: in_progress
 stack: flutter + supabase
-last_review: 2026-10-21
+last_review: 2026-10-23
 ---
 
 # Authentication
 
 Accounts exist so that lists can be shared and ratings can be attributed. Nothing in the app is public.
 
-> **Not built.** Sprint AUTH, issues AUTH-01 … AUTH-08.
+> **Client, repository and auth state built (AUTH-01/02/03).** No screen yet — AUTH-04 … AUTH-08 remain.
 
 ## Scope
 
@@ -25,14 +25,16 @@ Username is the invite handle — `citext`, unique, `^[a-z0-9_]{3,24}$`. A provi
 
 Supabase Auth, with a `profiles` row mirroring `auth.users` — `auth.users` is not client-readable, so without `profiles` a shared list cannot render a member's name or avatar. Table and policies: [[architecture/data-model]], [[architecture/security-model]].
 
-Providers:
+Providers, `core/network/supabase_client.dart` + `features/auth/presentation/providers/auth_providers.dart` (AUTH-01/02/03, done):
 
 ```
-supabaseClientProvider   SupabaseClient            (overridden in tests)
-authStateProvider        StreamProvider<AuthState> (supabase.auth.onAuthStateChange)
-currentUserProvider      Provider<AppUser?>        (derived)
-routerProvider           Provider<GoRouter>
+supabaseClientProvider   SupabaseClient            Supabase.instance.client, initialized in bootstrap()
+authRepositoryProvider   AuthRepository            AuthRepositoryImpl — signUpWithEmail/signInWithEmail/sendPasswordResetEmail/signOut, all Result<T>
+authStateProvider        StreamProvider<AuthState> supabase.auth.onAuthStateChange
+currentUserProvider      Provider<AppUser?>        derived from authStateProvider; null while loading or signed out
 ```
+
+`appRouterProvider` (not yet gated — AUTH-06) already exists from FND-10.
 
 Route gating is a declarative `redirect`. **Do not `ref.watch` the auth state inside `routerProvider`** — see [[architecture/decisions/0010-go-router-declarative-auth]]. While `authStateProvider` is still loading, pin to `/splash`; otherwise no session and not on an auth route → `/sign-in`, session and on an auth route → `/home`.
 
@@ -52,3 +54,4 @@ Repository methods return `Result<T>`, because sign-in needs a field-level error
 | Date | Summary |
 |------|---------|
 | 2026-10-21 | Specified as part of the MVP |
+| 2026-10-23 | AUTH-01/02/03 done: Supabase client, `AppUser`/`AuthRepository`/`AuthRepositoryImpl`, `authStateProvider`/`currentUserProvider`. No screen built yet, no manual step |

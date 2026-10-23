@@ -14,7 +14,7 @@ last_review: 2026-10-21
 - When an issue finishes, tick it here, update its row in [[sprints/index]], and recalculate the phase and overall counters by hand.
 - `Overall = done / 70`.
 
-**Overall: 26% (18/70)** · **Phase 0: 67% (4/6)** · **Phase 1: 100% (11/11)** · **Phase 2: 33% (3/9)**
+**Overall: 30% (21/70)** · **Phase 0: 67% (4/6)** · **Phase 1: 100% (11/11)** · **Phase 2: 67% (6/9)**
 
 ---
 
@@ -42,10 +42,10 @@ Everything here is cheap now and expensive later. **Do not start product feature
 - [x] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06**
 - [x] (`FND-11`) Lint rules — *any time after E03*
 
-## Phase 2 — Backend baseline and accounts · 33% (3/9)
+## Phase 2 — Backend baseline and accounts · 67% (6/9)
 
 - [x] **E09** (`BE-01` → `BE-02` → `BE-03`) Supabase project, `profiles`, `movies_cache`
-- [ ] **E10** (`AUTH-01` → `AUTH-02` → `AUTH-03`) Client, repository, auth state
+- [x] **E10** (`AUTH-01` → `AUTH-02` → `AUTH-03`) Client, repository, auth state
 - [ ] **E11** (`AUTH-04`, `AUTH-06`, `AUTH-08`) Email/password screens, router gating, tests
 
 🎯 **Milestone 1 — you can sign in and the app knows who you are.**
@@ -135,3 +135,4 @@ When something blocks, pull from here instead of idling:
 | 2026-10-21 | FND-11 done, no manual step. **Phase 1 — Foundations closed at 11/11.** Phase 2 (Backend baseline and accounts) is next: E09 — BE-01 → BE-02 → BE-03 |
 | 2026-10-22 | Correction: this page's "66" total and several phase denominators were wrong since the vault-bootstrap session — the per-sprint tables in [[sprints/index]] always summed to 70, not 66 (see [[_meta/discrepancies]]). Fixed `Overall = done / 70`, and the four phase headers whose issue counts didn't match their own bullet lists (Phase 2: 11→9, Phase 3: 12→11, Phase 5: 13→12, Phase 6: 9→10). Phase 4 and Phase 7 were already correct |
 | 2026-10-22 | E09 ticked: BE-01 (Supabase project/CLI), BE-02 (`profiles` + trigger + RLS), BE-03 (`movies_cache` + RLS) all done, verified via direct SQL against local Docker Postgres and pushed to the hosted project. No manual step. **Phase 2 at 3/9.** Next: E10 — AUTH-01 → AUTH-02 → AUTH-03 |
+| 2026-10-23 | E10 ticked: AUTH-01 (`Supabase.initialize` + `supabaseClientProvider`), AUTH-02 (`AppUser` + `AuthRepository` + Supabase impl), AUTH-03 (`authStateProvider` + `currentUserProvider`) all done. No manual step — no screen exercises any of it yet (AUTH-04). **Phase 2 at 6/9, Overall 21/70 (30%).** Next: E11 — AUTH-04, AUTH-06, AUTH-08 |
