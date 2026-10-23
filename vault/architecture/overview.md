@@ -64,9 +64,14 @@ tmdbDioProvider            Dio configured for api.themoviedb.org
             ├─ movieSearchResultsProvider  FutureProvider<List<Movie>>
             └─ movieDetailsProvider        FutureProvider.family<Movie, int>
 
-supabaseClientProvider     SupabaseClient (overridden in tests)
-  └─ <feature> remote data sources → repositories → notifiers
+supabaseClientProvider     SupabaseClient              <- Supabase.instance.client, initialized in bootstrap()
+  ├─ authRepositoryProvider : AuthRepository            <- typed as the domain interface, like movieRepositoryProvider
+  │    └─ AuthRepositoryImpl                            commands only: sign up, sign in, reset password, sign out
+  └─ authStateProvider        StreamProvider<AuthState> <- supabase.auth.onAuthStateChange
+       └─ currentUserProvider Provider<AppUser?>        <- derived; null while loading or signed out
 ```
+
+Tests override `authRepositoryProvider` with a hand-written fake (once one exists, from AUTH-04) or `authStateProvider` directly with a canned stream — not `supabaseClientProvider` itself, which would mean faking the Supabase SDK's wire protocol for no benefit. See `auth_providers_test.dart`.
 
 Repository providers are always typed as the **domain interface**, never the implementation. That is what lets a test swap in a hand-written fake with `overrideWithValue` and never touch the network.
 
@@ -79,7 +84,7 @@ Two paths, deliberately different — [[architecture/decisions/0009-result-for-c
 - **Reads.** Data sources throw; repositories catch and rethrow a sealed `AppFailure`; providers surface it as `AsyncValue.error`; one `AppErrorView` switches on the failure type and renders a localized message with a retry. `AsyncValue` already *is* a result type for reads — wrapping another one inside it would mean unwrapping twice at every call site.
 - **Writes.** Repositories return `Result<T>` (`Ok` | `Err`). Sign-in, rating, creating a list all need inline feedback — a field error under an input, a snackbar with rollback of an optimistic update — which an exception travelling through `AsyncValue` fits badly. An exhaustive `switch` on a sealed `Result` is checked by the compiler.
 
-`AppFailure` and `Result` landed in FND-05 (`core/error/{app_failure,result,failure_mapper}.dart`). `MovieRepositoryImpl` catches and rethrows mapped failures for both reads today — writes return `Result<T>` from AUTH-02 onward, once the first write repository exists. Both screens render `AppErrorView` (FND-07, `core/widgets/app_error_view.dart`), which switches on the failure and wires a real retry action via `ref.invalidate`. Since FND-08, each case in that switch reads a real `AppLocalizations` getter (`l10n.errorNetwork`, etc.) instead of a hardcoded string — `AppFailure.l10nKey` is a secondary, stable identifier, not what actually drives the switch (ARB-generated getters are named methods, not a dynamic `l10n[key]` lookup).
+`AppFailure` and `Result` landed in FND-05 (`core/error/{app_failure,result,failure_mapper}.dart`). `MovieRepositoryImpl` catches and rethrows mapped failures for both reads today. `AuthRepositoryImpl` (AUTH-02) is the first write repository and returns `Result<T>` from every command — `failure_mapper.dart` already mapped `AuthException` since FND-05, written ahead of the repository that would actually throw one. Both screens render `AppErrorView` (FND-07, `core/widgets/app_error_view.dart`), which switches on the failure and wires a real retry action via `ref.invalidate`. Since FND-08, each case in that switch reads a real `AppLocalizations` getter (`l10n.errorNetwork`, etc.) instead of a hardcoded string — `AppFailure.l10nKey` is a secondary, stable identifier, not what actually drives the switch (ARB-generated getters are named methods, not a dynamic `l10n[key]` lookup).
 
 > **Riverpod retries before you see an error.** `ProviderContainer.defaultRetry` retries a failed provider up to 10 times with exponential backoff (capped at 6.4s, ~38s total) before `AsyncValue` ever reaches `error` — `.when()` treats a retrying failure as `AsyncLoading` the whole time. Found while testing FND-07's retry button. Disabled app-wide in `main.dart` (`ProviderScope(retry: (_, __) => null, ...)`), since `AppErrorView`'s explicit retry is the intended recovery path, not a silent ~38s background one. `test/support/pump_app.dart`'s `pumpApp` disables it by default too, so a new widget test gets this for free.
 
@@ -130,6 +135,8 @@ Hand-written fakes, no mocking package — [[architecture/decisions/0014-hand-ro
 
 A fake drifting from its interface is a **compile error** — the whole point with five repositories about to exist.
 
+Testing a `StreamProvider` directly: `container.read(someStreamProvider.future)` does not reliably resolve for an already-settled `Stream.value(...)` on `flutter_riverpod` 3.4.3 — it hangs until the test's own timeout tears the container down (reproduced against a bare `StreamProvider<int>`, nothing auth-specific). `auth_providers_test.dart`'s `_settle()` works around it: `container.listen(provider, (_, __) {})` then two `await Future<void>.delayed(Duration.zero)` ticks. Logged in [[_meta/discrepancies]]; reuse that pattern over `.future` until the upstream bug is confirmed fixed.
+
 The recommendation ranking (HOME-02) is written as a **pure function** over seeds, candidates and exclusions, so it is testable with no I/O at all.
 
 ## Related
@@ -152,3 +159,4 @@ The recommendation ranking (HOME-02) is written as a **pure function** over seed
 | 2026-10-21 | FND-08 + FND-09 landed: l10n (`localeProvider`, every string extracted) and `test/support/` (`pumpApp`, generalized fakes, real fixtures). Testing section's stale pre-FND-02 paths also corrected in passing |
 | 2026-10-21 | FND-10 landed: `go_router` adoption, `MaterialApp.router`, four-tab shell with placeholder routes. `pump_app.dart`'s `pumpApp` gained an optional `routes` param for tests that need real navigation |
 | 2026-10-21 | FND-11 landed: `strict-casts`/`strict-raw-types` on, caught an untyped `dio.get` in the data source. **Phase 1 — Foundations closed, 11/11** |
+| 2026-10-23 | AUTH-01/02/03 landed: `supabaseClientProvider`, `AppUser`/`AuthRepository`/`AuthRepositoryImpl` (the first `Result`-returning repository), `authStateProvider`/`currentUserProvider`. Found and documented a `StreamProvider.future` bug in riverpod 3.4.3 while testing |
