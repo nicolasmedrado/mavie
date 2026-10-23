@@ -14,7 +14,7 @@ last_review: 2026-10-21
 - When an issue finishes, tick it here, update its row in [[sprints/index]], and recalculate the phase and overall counters by hand.
 - `Overall = done / 70`.
 
-**Overall: 30% (21/70)** · **Phase 0: 67% (4/6)** · **Phase 1: 100% (11/11)** · **Phase 2: 67% (6/9)**
+**Overall: 34% (24/70)** · **Phase 0: 67% (4/6)** · **Phase 1: 100% (11/11)** · **Phase 2: 100% (9/9)** ✅
 
 ---
 
@@ -42,13 +42,13 @@ Everything here is cheap now and expensive later. **Do not start product feature
 - [x] **E08** (`FND-10`) go_router adoption — *needs E06 for shell chrome and E07 for localized titles.* **Blocks AUTH-06**
 - [x] (`FND-11`) Lint rules — *any time after E03*
 
-## Phase 2 — Backend baseline and accounts · 67% (6/9)
+## Phase 2 — Backend baseline and accounts · 100% (9/9) ✅
 
 - [x] **E09** (`BE-01` → `BE-02` → `BE-03`) Supabase project, `profiles`, `movies_cache`
 - [x] **E10** (`AUTH-01` → `AUTH-02` → `AUTH-03`) Client, repository, auth state
-- [ ] **E11** (`AUTH-04`, `AUTH-06`, `AUTH-08`) Email/password screens, router gating, tests
+- [x] **E11** (`AUTH-04`, `AUTH-06`, `AUTH-08`) Email/password screens, router gating, tests
 
-🎯 **Milestone 1 — you can sign in and the app knows who you are.**
+🎯 **Milestone 1 — you can sign in and the app knows who you are.** ✅ reached 2026-10-23
 
 ## Phase 3 — The core loop · 0% (0/11)
 
@@ -137,3 +137,4 @@ When something blocks, pull from here instead of idling:
 | 2026-10-22 | E09 ticked: BE-01 (Supabase project/CLI), BE-02 (`profiles` + trigger + RLS), BE-03 (`movies_cache` + RLS) all done, verified via direct SQL against local Docker Postgres and pushed to the hosted project. No manual step. **Phase 2 at 3/9.** Next: E10 — AUTH-01 → AUTH-02 → AUTH-03 |
 | 2026-10-23 | E10 ticked: AUTH-01 (`Supabase.initialize` + `supabaseClientProvider`), AUTH-02 (`AppUser` + `AuthRepository` + Supabase impl), AUTH-03 (`authStateProvider` + `currentUserProvider`) all done. No manual step — no screen exercises any of it yet (AUTH-04). **Phase 2 at 6/9, Overall 21/70 (30%).** Next: E11 — AUTH-04, AUTH-06, AUTH-08 |
 | 2026-10-23 | AUTH-04 (sign in/up/forgot-password screens), AUTH-06 (router gating, splash, sign-out), AUTH-08 (fakes + tests) implemented together. Found and fixed a real sign-in-never-navigates bug (`currentUserProvider` read-staleness inside the redirect) along the way. `flutter analyze`/`flutter test` clean, 80 tests. **E11 left unticked** — this is the first auth issue with an actual screen, so it needs your manual confirmation before it's done |
+| 2026-10-23 | E11 ticked: manual confirmation landed on a physical device — sign-up, sign-in, wrong password, forgot password, sign-out and session persistence all work. Found the hosted project's Auth Site URL still defaults to `localhost:3000` (confirmation errors in the browser on a phone, but the confirmation itself still succeeds server-side) — deferred to AUTH-05. **Phase 2 — Backend baseline and accounts closed at 9/9. Milestone 1 reached: you can sign in and the app knows who you are.** Overall 24/70 (34%). Next: Phase 3 — E12, `BE-04` → `BE-07` → `LIB-01` → `LIB-02` |

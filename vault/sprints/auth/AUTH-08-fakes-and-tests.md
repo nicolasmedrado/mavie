@@ -3,9 +3,9 @@ title: Fake AuthRepository, redirect behaviour, form validation tests
 sprint: auth
 feature: auth
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-23
-finished_at:
+finished_at: 2026-10-23
 ---
 
 # AUTH-08 · Fake `AuthRepository`, redirect behaviour, form validation tests
@@ -38,7 +38,7 @@ AUTH-04's screens and AUTH-06's router gating are covered by automated tests tha
 
 ## Test scenario
 
-Pure test infrastructure and automated coverage — no manual step of its own. It stays `in_progress` only because it was implemented and will be closed in the same PR as AUTH-04/AUTH-06, which do need your manual confirmation.
+Pure test infrastructure and automated coverage — no manual step of its own. Closed alongside AUTH-04/AUTH-06 now that their manual confirmation landed.
 
 ## Dependencies
 
@@ -56,3 +56,4 @@ Pure test infrastructure and automated coverage — no manual step of its own. I
 | Date | Summary |
 |------|---------|
 | 2026-10-23 | issue created and implemented together with AUTH-04/AUTH-06 (execution slot E11). Found a second riverpod provider-liveness gotcha while building the router test. `flutter analyze`/`flutter test` clean, 80 tests. Stays `in_progress` pending AUTH-04/06's manual confirmation |
+| 2026-10-23 | AUTH-04/AUTH-06's manual confirmation landed. Issue closed |

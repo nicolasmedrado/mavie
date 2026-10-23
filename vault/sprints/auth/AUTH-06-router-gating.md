@@ -3,9 +3,9 @@ title: Router gating, splash, sign-out
 sprint: auth
 feature: auth
 milestone: mvp
-status: in_progress
+status: done
 started_at: 2026-10-23
-finished_at:
+finished_at: 2026-10-23
 ---
 
 # AUTH-06 · Router gating, splash, sign-out
@@ -35,7 +35,11 @@ Every route except the auth screens is unreachable without a session, the sessio
 
 ## Test scenario
 
-Handed to you in chat as a combined roteiro for AUTH-04/06/08 — stays `in_progress` until you confirm the sign-in → search → settings → sign-out → back-to-sign-in round trip on a real device.
+1. Cold start signed out → lands on sign-in, not stuck on splash
+2. Sign in → redirect reacts on its own, lands on search with no manual navigation
+3. Settings (via the temporary gear icon) → sign out → bounced back to sign-in automatically
+4. Sign back in, close and reopen the app → still signed in, lands straight on search
+   - **Result:** confirmed on a physical Android device
 
 ## Dependencies
 
@@ -54,3 +58,4 @@ Handed to you in chat as a combined roteiro for AUTH-04/06/08 — stays `in_prog
 | Date | Summary |
 |------|---------|
 | 2026-10-23 | issue created and implemented together with AUTH-04/AUTH-08 (execution slot E11). Found and fixed a real sign-in-never-navigates bug (`currentUserProvider` staleness) while building the redirect tests. `flutter analyze`/`flutter test` clean. Manual test pending — stays `in_progress` |
+| 2026-10-23 | Manual test confirmed on a physical device: sign-in/sign-out round trip and session persistence across an app restart all work as designed. Issue closed |

@@ -9,7 +9,7 @@ last_review: 2026-10-23
 
 Accounts exist so that lists can be shared and ratings can be attributed. Nothing in the app is public.
 
-> **Email/password sign-in works end to end (AUTH-01 … AUTH-04, AUTH-06, AUTH-08), pending manual confirmation.** Google sign-in (AUTH-05) and profile setup/edit (AUTH-07) remain.
+> **Email/password sign-in works end to end, confirmed on a physical device (AUTH-01 … AUTH-04, AUTH-06, AUTH-08).** Google sign-in (AUTH-05) and profile setup/edit (AUTH-07) remain.
 
 ## Scope
 
@@ -40,6 +40,8 @@ currentUserProvider      Provider<AppUser?>        derived from authStateProvide
 
 Repository methods return `Result<T>`, because sign-in needs a field-level error under the input rather than a page-level error state — [[architecture/decisions/0009-result-for-commands]].
 
+> **The sign-up confirmation email's link currently errors on a phone.** The hosted project's Auth Site URL is still the default `http://localhost:3000` — Supabase confirms the email and issues a session server-side *before* redirecting the browser there, so the account is confirmed despite the error page. Fixing the destination for real needs AUTH-05's deep-link scheme; see [[_meta/discrepancies]].
+
 ## Risk
 
 **Google sign-in platform configuration is the most time-consuming non-code task in the MVP** and has nothing to do with Dart: debug *and* release SHA-1 fingerprints, `google-services.json`, the iOS reversed client ID, a deep-link scheme, and the Supabase redirect allowlist. It is scheduled late (AUTH-05, execution slot E15) deliberately, so it cannot block the core product loop. Email+password is the critical path.
@@ -56,3 +58,4 @@ Repository methods return `Result<T>`, because sign-in needs a field-level error
 | 2026-10-21 | Specified as part of the MVP |
 | 2026-10-23 | AUTH-01/02/03 done: Supabase client, `AppUser`/`AuthRepository`/`AuthRepositoryImpl`, `authStateProvider`/`currentUserProvider`. No screen built yet, no manual step |
 | 2026-10-23 | AUTH-04/06/08 implemented: real sign-in/sign-up/forgot-password screens, router auth gating, splash, a minimal sign-out page, fakes and tests. `in_progress` pending manual confirmation of the sign-in → search → sign-out round trip on a real device |
+| 2026-10-23 | Manual confirmation landed on a physical device. Found the Supabase Site URL defaulting to `localhost:3000` (confirmation link errors on a phone, confirmation still succeeds). **Email+password sign-in done end to end** |
