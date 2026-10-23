@@ -79,6 +79,125 @@
   },
   "comingSoon": "Coming soon",
   "@comingSoon": {
-    "description": "Body text for every route that is wired but not built yet (auth screens, profile, settings, list sub-routes) - FND-10"
+    "description": "Body text for every route that is wired but not built yet (profile, list sub-routes) - FND-10"
+  },
+  "authSignInTitle": "Sign in",
+  "@authSignInTitle": {
+    "description": "App bar title on the sign-in screen"
+  },
+  "authSignUpTitle": "Create account",
+  "@authSignUpTitle": {
+    "description": "App bar title on the sign-up screen"
+  },
+  "authForgotPasswordTitle": "Reset password",
+  "@authForgotPasswordTitle": {
+    "description": "App bar title on the forgot-password screen"
+  },
+  "authEmailLabel": "Email",
+  "@authEmailLabel": {
+    "description": "Label for the email field on every auth form"
+  },
+  "authPasswordLabel": "Password",
+  "@authPasswordLabel": {
+    "description": "Label for the password field on sign-in and sign-up"
+  },
+  "authConfirmPasswordLabel": "Confirm password",
+  "@authConfirmPasswordLabel": {
+    "description": "Label for the confirm-password field on sign-up"
+  },
+  "authSignInButton": "Sign in",
+  "@authSignInButton": {
+    "description": "Submit button on the sign-in screen"
+  },
+  "authSignUpButton": "Create account",
+  "@authSignUpButton": {
+    "description": "Submit button on the sign-up screen"
+  },
+  "authSendResetLinkButton": "Send reset link",
+  "@authSendResetLinkButton": {
+    "description": "Submit button on the forgot-password screen"
+  },
+  "authForgotPasswordLink": "Forgot your password?",
+  "@authForgotPasswordLink": {
+    "description": "Link on the sign-in screen to the forgot-password screen"
+  },
+  "authNoAccountPrompt": "Don't have an account?",
+  "@authNoAccountPrompt": {
+    "description": "Prompt on the sign-in screen, next to the sign-up link"
+  },
+  "authSignUpLink": "Sign up",
+  "@authSignUpLink": {
+    "description": "Link on the sign-in screen to the sign-up screen"
+  },
+  "authHaveAccountPrompt": "Already have an account?",
+  "@authHaveAccountPrompt": {
+    "description": "Prompt on the sign-up screen, next to the sign-in link"
+  },
+  "authSignInLink": "Sign in",
+  "@authSignInLink": {
+    "description": "Link on the sign-up screen back to the sign-in screen"
+  },
+  "authBackToSignIn": "Back to sign in",
+  "@authBackToSignIn": {
+    "description": "Link on the forgot-password screen back to the sign-in screen"
+  },
+  "authErrorEmailRequired": "Enter your email",
+  "@authErrorEmailRequired": {
+    "description": "Email field validation error when empty"
+  },
+  "authErrorEmailInvalid": "Enter a valid email",
+  "@authErrorEmailInvalid": {
+    "description": "Email field validation error when not a valid address"
+  },
+  "authErrorPasswordRequired": "Enter your password",
+  "@authErrorPasswordRequired": {
+    "description": "Password field validation error when empty"
+  },
+  "authErrorPasswordTooShort": "Password must be at least {minLength} characters",
+  "@authErrorPasswordTooShort": {
+    "description": "Password field validation error when shorter than Supabase's minimum_password_length",
+    "placeholders": {
+      "minLength": {
+        "type": "int"
+      }
+    }
+  },
+  "authErrorConfirmPasswordRequired": "Confirm your password",
+  "@authErrorConfirmPasswordRequired": {
+    "description": "Confirm-password field validation error when empty"
+  },
+  "authErrorPasswordMismatch": "Passwords don't match",
+  "@authErrorPasswordMismatch": {
+    "description": "Confirm-password field validation error when it differs from the password field"
+  },
+  "authSignUpConfirmationMessage": "We sent a confirmation link to {email}. Check your inbox to finish creating your account.",
+  "@authSignUpConfirmationMessage": {
+    "description": "Shown on the sign-up screen after a successful signUpWithEmail call, since the session isn't active until the email is confirmed",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authPasswordResetConfirmationMessage": "We sent a password reset link to {email}.",
+  "@authPasswordResetConfirmationMessage": {
+    "description": "Shown on the forgot-password screen after a successful sendPasswordResetEmail call",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authSignOutButton": "Sign out",
+  "@authSignOutButton": {
+    "description": "Button on the (temporary, AUTH-07 replaces it) settings screen"
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "App bar title on the settings screen"
+  },
+  "settingsTooltip": "Settings",
+  "@settingsTooltip": {
+    "description": "Tooltip for the temporary settings icon on the search screen's app bar - AUTH-06, removed once Settings has a permanent entry point"
   }
 }

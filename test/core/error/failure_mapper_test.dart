@@ -112,6 +112,17 @@ void main() {
       expect(failure, isA<UnauthorizedFailure>());
     });
 
+    test(
+      'a 400 status (e.g. invalid credentials) maps to ValidationFailure',
+      () {
+        final failure = mapExceptionToFailure(
+          const AuthException('Invalid login credentials', statusCode: '400'),
+          StackTrace.current,
+        );
+        expect(failure, isA<ValidationFailure>());
+      },
+    );
+
     test('any other status maps to UnknownFailure', () {
       final failure = mapExceptionToFailure(
         const AuthException('something else', statusCode: '500'),

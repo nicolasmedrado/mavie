@@ -68,8 +68,15 @@ AppFailure _mapPostgrestException(
 }
 
 AppFailure _mapAuthException(AuthException error, StackTrace stackTrace) {
-  if (error.statusCode == '401') {
-    return const UnauthorizedFailure();
+  switch (error.statusCode) {
+    case '401':
+      return const UnauthorizedFailure();
+    // GoTrue returns 400 for invalid email/password, a weak password, an
+    // already-registered email, and similar input problems — AUTH-04's
+    // first real exercise of this mapper against the hosted project.
+    case '400':
+      return const ValidationFailure();
+    default:
+      return UnknownFailure(error, stackTrace);
   }
-  return UnknownFailure(error, stackTrace);
 }
