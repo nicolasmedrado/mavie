@@ -132,9 +132,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 String? _redirect(Ref ref, GoRouterState state) {
   final authState = ref.read(authStateProvider);
   if (authState.isLoading) {
-    return state.matchedLocation == AppRoutes.splash
-        ? null
-        : AppRoutes.splash;
+    return state.matchedLocation == AppRoutes.splash ? null : AppRoutes.splash;
   }
 
   // Derived directly from authState, not currentUserProvider: this runs

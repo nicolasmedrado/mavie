@@ -7,9 +7,7 @@ import '../../../../support/fakes/fake_auth_repository.dart';
 import '../../../../support/pump_app.dart';
 
 void main() {
-  testWidgets('tapping sign out calls AuthRepository.signOut', (
-    tester,
-  ) async {
+  testWidgets('tapping sign out calls AuthRepository.signOut', (tester) async {
     final fake = FakeAuthRepository();
     await pumpApp(
       tester,
